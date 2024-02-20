@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
     res.json({ message: "Welcome to Backend" });
 });
 
-// app.use("/api/product", product);
+app.use("/api/product", product);
 // app.use("/api/auth", user);
 // app.use("/api/cart", cart);
 // app.use("api/order", order);
