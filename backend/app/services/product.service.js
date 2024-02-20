@@ -24,6 +24,7 @@ class ProductService {
 
 
     async updateProduct(productId, updatedFields) {
+
         const result = await this.Product.findOneAndUpdate(
             { _id: ObjectId.isValid(productId) ? new ObjectId(productId) : null },
             { $set: updatedFields },
@@ -33,19 +34,18 @@ class ProductService {
         return result.value;
     }
 
-    async getProductById(productId) {
-        return await this.Product.findOne({
-            _id: ObjectId.isValid(productId) ? new ObjectId(productId) : null,
-        });
-    }
-
-
     async deleteProduct(productId) {
         const result = await this.Product.findOneAndDelete({
             _id: ObjectId.isValid(productId) ? new ObjectId(productId) : null,
         });
 
         return result.value;
+    }
+
+    async getProductById(productId) {
+        return await this.Product.findOne({
+            _id: ObjectId.isValid(productId) ? new ObjectId(productId) : null,
+        });
     }
 
     async getProductsByCategory(category) {
