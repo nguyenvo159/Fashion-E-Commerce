@@ -16,7 +16,7 @@ class ProductService {
             }
 
             const result = await this.Product.insertOne(product);
-            return result.insertedId;
+            return "Product added successfully";
         } catch (error) {
             throw new Error("Could not add product: " + error.message);
         }
@@ -24,30 +24,28 @@ class ProductService {
 
 
     async updateProduct(productId, updatedFields) {
-        try {
-            await this.Product.updateOne({ _id: ObjectId(productId) }, { $set: updatedFields });
-            return true;
-        } catch (error) {
-            throw new Error("Could not update product");
-        }
-    }
+        const result = await this.Product.findOneAndUpdate(
+            { _id: ObjectId.isValid(productId) ? new ObjectId(productId) : null },
+            { $set: updatedFields },
+            { returnOriginal: false }
+        );
 
-    async deleteProduct(productId) {
-        try {
-            await this.Product.deleteOne({ _id: ObjectId(productId) });
-            return true;
-        } catch (error) {
-            throw new Error("Could not delete product");
-        }
+        return result.value;
     }
 
     async getProductById(productId) {
-        try {
-            const product = await this.Product.findOne({ _id: ObjectId(productId) });
-            return product;
-        } catch (error) {
-            throw new Error("Could not fetch product");
-        }
+        return await this.Product.findOne({
+            _id: ObjectId.isValid(productId) ? new ObjectId(productId) : null,
+        });
+    }
+
+
+    async deleteProduct(productId) {
+        const result = await this.Product.findOneAndDelete({
+            _id: ObjectId.isValid(productId) ? new ObjectId(productId) : null,
+        });
+
+        return result.value;
     }
 
     async getProductsByCategory(category) {

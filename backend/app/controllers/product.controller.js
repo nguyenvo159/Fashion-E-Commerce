@@ -8,19 +8,19 @@ exports.create = async (req, res, next) => {
 
     try {
         const productService = new ProductService(MongoDB.client);
-        const productId = await productService.addProduct(req.body);
-        return res.status(201).json({ productId });
+        const message = await productService.addProduct(req.body);
+        return res.status(201).json({ message });
     } catch (error) {
         console.error(error);
         return next(new Error("An error occurred while creating the product"));
     }
 };
 
-exports.get = async (req, res, next) => {
+exports.getById = async (req, res, next) => {
     try {
         const productService = new ProductService(MongoDB.client);
-        const { productId } = req.params;
-        const product = await productService.getProductById(productId);
+        const product = await productService.getProductById(req.params.productId);
+
         if (!product) {
             return res.status(404).json({ message: "Product not found" });
         }
@@ -31,11 +31,23 @@ exports.get = async (req, res, next) => {
     }
 };
 
+
 exports.update = async (req, res, next) => {
     try {
-        const productService = new ProductService(MongoDB.client);
         const { productId } = req.params;
-        await productService.updateProduct(productId, req.body);
+        const updatedFields = req.body;
+
+        const productService = new ProductService(MongoDB.client);
+        const existingProduct = await productService.getProductById(productId);
+
+        if (!existingProduct) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+
+        const updatedProduct = { ...existingProduct, ...updatedFields };
+
+        await productService.updateProduct(productId, updatedProduct);
+
         return res.status(200).json({ message: "Product updated successfully" });
     } catch (error) {
         console.error(error);
@@ -47,6 +59,13 @@ exports.delete = async (req, res, next) => {
     try {
         const productService = new ProductService(MongoDB.client);
         const { productId } = req.params;
+
+        const existingProduct = await productService.getProductById(productId);
+
+        if (!existingProduct) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+
         await productService.deleteProduct(productId);
         return res.status(200).json({ message: "Product deleted successfully" });
     } catch (error) {
