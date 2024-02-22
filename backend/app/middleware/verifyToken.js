@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
+const UserService = require("../services/user.service");
+const MongoDB = require("../utils/mongodb.utils");
 
-const verifyToken = (req, res, next) => {
+const verifyToken = async (req, res, next) => {
     // Lấy token từ tiêu đề yêu cầu
     const token = req.headers["authorization"];
 
@@ -13,7 +15,15 @@ const verifyToken = (req, res, next) => {
         // Xác thực token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        req.userId = decoded.userId;
+
+        const userService = new UserService(MongoDB.client);
+        const user = await userService.getUserById(decoded.userId);
+
+        if (!user) {
+            return res.status(401).json({ message: "Invalid token" });
+        }
+
+        req.user = user;
         next();
     } catch (error) {
         console.error(error);
