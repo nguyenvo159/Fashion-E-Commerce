@@ -5,6 +5,11 @@ class ProductService {
         this.Product = client.db().collection("products");
     }
 
+    async find(filter) {
+        const cursor = await this.Product.find(filter);
+        return await cursor.toArray();
+    }
+
     async addProduct(product) {
         try {
             // Kiểm tra xem sản phẩm đã tồn tại 

@@ -38,15 +38,15 @@ exports.update = async (req, res, next) => {
         const updatedFields = req.body;
 
         const productService = new ProductService(MongoDB.client);
-        const existingProduct = await productService.getProductById(productId);
+        const product = await productService.getProductById(productId);
 
-        if (!existingProduct) {
+        if (!product) {
             return res.status(404).json({ message: "Product not found" });
         }
-        if (existingProduct.name == updatedFields.name) {
+        if (product.name == updatedFields.name) {
             return res.status(201).json({ message: "Product don't be same other information" })
         }
-        const updatedProduct = { ...existingProduct, ...updatedFields };
+        const updatedProduct = { ...product, ...updatedFields };
 
         await productService.updateProduct(productId, updatedProduct);
 

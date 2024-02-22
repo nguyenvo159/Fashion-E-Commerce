@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/product", product);
 app.use("/api/auth", user);
-// app.use("/api/cart", cart);
+app.use("/api/cart", cart);
 // app.use("api/order", order);
 
 module.exports = app;

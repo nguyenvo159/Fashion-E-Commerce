@@ -1,0 +1,161 @@
+const { ObjectId } = require("mongodb");
+
+
+const ProductService = require("./product.service");
+
+class CartService {
+    constructor(client) {
+        this.Cart = client.db().collection("carts");
+        this.product = new ProductService(client);
+        this.client = client;
+    }
+
+    async updateCart(userId, productId, quantity = 1, size = "freesize") {
+        if (!ObjectId.isValid(userId) || !ObjectId.isValid(productId)) {
+            throw new Error("Invalid userId or productId");
+        }
+
+        const filter = { userId: ObjectId.isValid(userId) ? new ObjectId(userId) : null };
+        const cart = await this.Cart.findOne(filter);
+
+        // Nếu chưa có giỏ hàng, tạo mới giỏ hàng và thêm sản phẩm
+        if (!cart) {
+            const newCart = {
+                userId: new ObjectId(userId),
+                items: [{ productId: new ObjectId(productId), size: size, quantity: quantity }],
+            };
+
+            await this.Cart.insertOne(newCart);
+
+            return "Add new cart and product successfully";
+        }
+
+        const existingItemIndex = cart.items.findIndex(item => item.productId.equals(new ObjectId(productId)));
+
+        // Nếu sản phẩm chưa tồn tại, thêm mới vào giỏ hàng
+        if (existingItemIndex == -1) {
+            const update = {
+                $addToSet: {
+                    items: {
+                        productId: new ObjectId(productId),
+                        size: size,
+                        quantity: quantity,
+                    },
+                },
+            };
+            await this.Cart.findOneAndUpdate(
+                filter,
+                update,
+                {
+                    returnDocument: "after"
+                }
+            );
+            return "Add new product to cart successfully";
+        }
+
+        // Nếu sản phẩm đã tồn tại, cập nhật số lượng
+        // const updatedQuantity = cart.items[existingItemIndex].quantity + quantity;
+        const update = {
+            $set: {
+                [`items.${existingItemIndex}.size`]: size,
+                [`items.${existingItemIndex}.quantity`]: quantity
+            },
+        };
+
+        if (cart.items[existingItemIndex].quantity == quantity && cart.items[existingItemIndex].size == size) {
+            return "Nothing be updated";
+        }
+
+        await this.Cart.findOneAndUpdate(filter, update, { returnDocument: "after" });
+
+        return "Updated product successfully";
+    }
+
+    async getQuantity(userId, productId) {
+        if (!ObjectId.isValid(userId) || !ObjectId.isValid(productId)) {
+            throw new Error("Invalid userId or productId");
+        }
+
+        const filter = { userId: ObjectId.isValid(userId) ? new ObjectId(userId) : null };
+        const cart = await this.Cart.findOne(filter);
+
+        if (!cart) {
+            return "Add new cart and product successfully";
+        }
+
+        const existingItemIndex = cart.items.findIndex(item => item.productId.equals(new ObjectId(productId)));
+        return cart.items[existingItemIndex].quantity;
+    }
+
+
+    // Chi tiết product trong cart
+    async populateCart(cart) {
+        const productIds = cart.items.map(item => item.productId);
+
+        const products = await this.product.find({ _id: { $in: productIds } });
+
+        const validProducts = products.filter(product => product !== null);
+
+        // Tổng tiền cart
+        const total = cart.items.reduce((acc, item) => {
+            const product = validProducts.find(p => p._id.toString() === item.productId.toString());
+            if (product) {
+                acc += product.price * item.quantity; // Giá của mỗi sản phẩm nhân số lượng
+            }
+            return acc;
+        }, 0);
+
+        const populatedCart = {
+            ...cart,
+            total: total,
+            items: cart.items.reduce((acc, item) => {
+                const product = validProducts.find(p => p._id.toString() === item.productId.toString());
+                if (product) {
+                    acc.push({
+                        ...item,
+                        product: product
+                    });
+                }
+                return acc;
+            }, [])
+        };
+
+        return populatedCart;
+    }
+
+    async getCart(userId) {
+        const filter = { userId: ObjectId.isValid(userId) ? new ObjectId(userId) : null };
+        const cart = await this.Cart.findOne(filter);
+
+        if (cart) {
+            const result = await this.populateCart(cart);
+            return result;
+        }
+
+        return null;
+    }
+
+    async removeItem(userId, productId) {
+        if (!ObjectId.isValid(userId) || !ObjectId.isValid(productId)) {
+            throw new Error("Invalid userId or productId");
+        }
+
+        const filter = { userId: new ObjectId(userId) };
+        const update = { $pull: { items: { productId: new ObjectId(productId) } } };
+
+        const result = await this.Cart.findOneAndUpdate(filter, update, { returnDocument: "after" });
+
+        return result.value;
+    }
+
+    async clearCart(userId) {
+        const filter = { userId: ObjectId.isValid(userId) ? new ObjectId(userId) : null };
+
+        await this.Cart.findOneAndDelete(filter);
+
+    }
+
+
+}
+
+module.exports = CartService;
