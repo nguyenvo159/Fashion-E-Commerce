@@ -46,8 +46,15 @@ exports.getOrderById = async (req, res, next) => {
 
 exports.getUserOrder = async (req, res, next) => {
     try {
-        const { userId } = req.params;
         const orderService = new OrderService(MongoDB.client);
+        const { userId } = req.params;
+
+        // Kiểm tra xem ID người dùng từ token có khớp với ID từ tham số không
+        if (req.user._id.toString() !== userId) {
+            console.log(req.user);
+            return res.status(403).json({ message: "Unauthorized access" });
+        }
+
         const result = await orderService.getUserOrder(userId);
         res.status(200).json(result);
     } catch (error) {
