@@ -18,6 +18,16 @@ class CartService {
         const filter = { userId: ObjectId.isValid(userId) ? new ObjectId(userId) : null };
         const cart = await this.Cart.findOne(filter);
 
+        const product = await this.product.getProductById(productId);
+        if (!product) {
+            throw new Error("Product not found");
+        }
+
+        if (quantity > product.inventory) {
+            throw new Error("Not enough stock available");
+        }
+
+
         // Nếu chưa có giỏ hàng, tạo mới giỏ hàng và thêm sản phẩm
         if (!cart) {
             const newCart = {
@@ -62,13 +72,9 @@ class CartService {
             },
         };
 
-        if (cart.items[existingItemIndex].quantity == quantity && cart.items[existingItemIndex].size == size) {
-            return "Nothing be updated";
-        }
-
         await this.Cart.findOneAndUpdate(filter, update, { returnDocument: "after" });
 
-        return "Updated product successfully";
+        return "Add Product successfully";
     }
 
     async getQuantity(userId, productId) {
@@ -151,8 +157,18 @@ class CartService {
     async clearCart(userId) {
         const filter = { userId: ObjectId.isValid(userId) ? new ObjectId(userId) : null };
 
-        await this.Cart.findOneAndDelete(filter);
+        const cart = await this.Cart.findOne(filter);
 
+        if (!cart) {
+            return;
+        }
+        for (const item of cart.items) {
+            const productId = item.productId;
+            const quantity = item.quantity;
+
+            await this.product.updateInventory(productId, quantity);
+        }
+        await this.Cart.findOneAndDelete(filter);
     }
 
 

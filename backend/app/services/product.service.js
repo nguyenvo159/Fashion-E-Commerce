@@ -19,6 +19,8 @@ class ProductService {
                 // throw new Error("Product already exists");
                 return "Product is already exists";
             }
+            product.createdAt = new Date();
+            product.updatedAt = new Date();
 
             const result = await this.Product.insertOne(product);
             return "Product added successfully";
@@ -30,6 +32,7 @@ class ProductService {
 
     async updateProduct(productId, updatedFields) {
 
+        updatedFields.updatedAt = new Date();
         const result = await this.Product.findOneAndUpdate(
             { _id: ObjectId.isValid(productId) ? new ObjectId(productId) : null },
             { $set: updatedFields },
@@ -37,6 +40,23 @@ class ProductService {
         );
 
         return result.value;
+    }
+    async updateInventory(productId, quantity) {
+        const product = await this.getProductById(productId);
+        if (!product) {
+            throw new Error("Product not found");
+        }
+        const updatedInventory = product.inventory - quantity;
+
+        // Đảm bảo tồn kho không âm
+        if (updatedInventory < 0) {
+            updatedInventory = 0;
+        }
+        const result = await this.Product.findOneAndUpdate(
+            { _id: ObjectId.isValid(productId) ? new ObjectId(productId) : null },
+            { $set: { inventory: updatedInventory } },
+            { returnOriginal: false }
+        );
     }
 
     async deleteProduct(productId) {
