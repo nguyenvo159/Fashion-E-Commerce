@@ -1,6 +1,6 @@
 import { createWebHistory, createRouter } from "vue-router";
 
-import ProductManager from "@/views/admin/Product.vue";
+import ProductManager from "@/views/admin/DashBoard.vue";
 import Product from "@/views/product/Product.vue";
 
 const routes = [
