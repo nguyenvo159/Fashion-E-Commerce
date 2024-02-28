@@ -10,6 +10,10 @@
   color: #d52220;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .compare-price {
   text-decoration: line-through;
 }
