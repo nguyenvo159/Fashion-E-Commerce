@@ -32,11 +32,23 @@ class ProductService {
 
     async updateProduct(productId, updatedFields) {
 
-        updatedFields.updatedAt = new Date();
+        // updatedFields.updatedAt = new Date();
+        const update = {
+            $set: {
+                name: updatedFields.name,
+                category: updatedFields.category,
+                inventory: updatedFields.inventory,
+                imgURL: updatedFields.imgURL,
+                price: updatedFields.price,
+                description: updatedFields.description,
+                updatedAt: new Date(),
+            },
+        };
         const result = await this.Product.findOneAndUpdate(
             { _id: ObjectId.isValid(productId) ? new ObjectId(productId) : null },
-            { $set: updatedFields },
-            { returnOriginal: false }
+            // { $set: updatedFields },
+            update,
+            { returnDocument: "after" }
         );
 
         return result.value;
