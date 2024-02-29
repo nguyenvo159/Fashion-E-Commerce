@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <div class="row">
+        <div class="row" style="background-color: lightcyan;">
             <!-- Admin Sidebar -->
             <div class="col-lg-3 admin-sidebar" style="border-radius: 0 25px 0 0;">
 

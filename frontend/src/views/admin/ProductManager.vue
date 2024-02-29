@@ -1,33 +1,33 @@
 <template>
-    <div class="col-lg-9 admin-content">
+    <div class="col-lg-9 col-12 admin-content">
         <h1 class="mb-4">Quản lý sản phẩm </h1>
         <div class="row mt-4">
-            <div class="mb-3 col-lg-3">
-                <div class="card bg-primary text-white">
+            <div class="mb-3 col-lg-3 col-md-6">
+                <div class="card shadow rounded-0 bg-primary text-white">
                     <div class="card-body">
-                        <h5 class="card-title">Tổng số sản phẩm</h5>
+                        <h5 class="card-title">Tổng</h5>
                         <p class="card-text">{{ products.length }}</p>
                     </div>
                 </div>
             </div>
-            <div class="mb-3 col-lg-3">
-                <div class="card bg-success text-white">
+            <div class="mb-3 col-lg-3 col-md-6">
+                <div class="card shadow rounded-0 bg-warning text-white">
                     <div class="card-body">
                         <h5 class="card-title">Áo</h5>
                         <p class="card-text">{{ getCategoryCount('Shirt') }}</p>
                     </div>
                 </div>
             </div>
-            <div class="mb-3 col-lg-3">
-                <div class="card bg-info text-white">
+            <div class="mb-3 col-lg-3 col-md-6">
+                <div class="card shadow rounded-0 bg-success text-white">
                     <div class="card-body">
                         <h5 class="card-title">Quần</h5>
                         <p class="card-text">{{ getCategoryCount('Pant') }}</p>
                     </div>
                 </div>
             </div>
-            <div class="mb-3 col-lg-3">
-                <div class="card bg-warning text-white">
+            <div class="mb-3 col-lg-3 col-md-6">
+                <div class="card shadow rounded-0 bg-danger text-white">
                     <div class="card-body">
                         <h5 class="card-title">Khác</h5>
                         <p class="card-text">{{ getCategoryCount('Other') }}</p>
@@ -39,32 +39,36 @@
         <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#add-product">Thêm
             Sản phẩm</button>
 
+        <button class="btn mb-3 ml-3 m" style="box-shadow: none;" @click="refreshList()">
+            <i class="main-hover fa-solid fa-rotate-right" style="font-size: 24px;"></i></button>
 
-        <table class="table">
+        <InputSearch v-model="searchText" />
+
+        <table class="table shadow">
             <thead class="thead-light">
                 <tr>
-                    <th>STT</th>
+                    <th class="align-middle text-center">STT</th>
                     <th><a class="main-hover" @click="sortProductsByName()">Tên</a></th>
                     <th><a class="main-hover" @click="sortProductsByCategory()">Loại</a></th>
                     <th>Giá</th>
                     <th>Ngày thêm</th>
                     <th>Ngày sửa</th>
-                    <th>Số lượng</th>
+                    <th class="align-middle text-center">Số lượng</th>
                     <th>Thao tác</th>
                 </tr>
             </thead>
             <div v-if="products.length === 0">No products available.</div>
             <tbody v-else>
 
-                <tr v-for="(product, index) in products" :key="product._id" class="product-item">
-                    <td>{{ index + 1 }}</td>
+                <tr v-for="(product, index) in filteredProducts" :key="product._id" class="product-item">
+                    <td class="align-middle text-center">{{ index + 1 }}</td>
                     <td>{{ product.name }}</td>
                     <td>{{ product.category }}</td>
                     <td>{{ product.price }}</td>
                     <td>{{ formatDate(product.createdAt) }}</td>
                     <td>{{ formatDate(product.updatedAt) }}</td>
 
-                    <td>{{ product.inventory }}</td>
+                    <td class="align-middle text-center">{{ product.inventory }}</td>
                     <td>
                         <a class="cursor-pointer mr-2" data-toggle="modal" data-target="#update-product"
                             @click="confirmUpdate(product)">Sửa</a>
@@ -93,17 +97,21 @@
 <script>
 import { format } from 'date-fns';
 import ProductService from '@/services/product.service';
+import InputSearch from '@/components/InputSearch.vue';
 import InputProduct from '@/components/admin/InputProduct.vue';
 import NotificationModal from '@/components/NotificationModal.vue';
 
 export default {
     components: {
+        InputSearch,
         InputProduct,
         NotificationModal,
     },
     data() {
         return {
             products: [],
+            activeIndex: -1,
+            searchText: "",
             newProduct: {
                 name: "",
                 price: 0,
@@ -117,11 +125,35 @@ export default {
             productToDelete: null,
         };
     },
+    watch: {
+        searchText() {
+            this.activeIndex = -1;
+        }
+    },
+    computed: {
+        productStrings() {
+            return this.products.map((product) => {
+                const { name, category, description } = product;
+                return [name.toLowerCase(), category.toLowerCase(), description.toLowerCase()].join("");
+            });
+        },
+        filteredProducts() {
+            if (!this.searchText.trim()) return this.products;
+            return this.products.filter((_product, index) =>
+                this.productStrings[index].includes(this.searchText.toLocaleLowerCase())
+            );
+        },
+    },
     async created() {
         this.retrieveProducts();
 
     },
     methods: {
+        refreshList() {
+            this.retrieveProducts();
+            this.activeIndex = -1;
+            this.searchText = "";
+        },
         closeModal() {
             $('#add-product').modal('hide');
             $('#update-product').modal('hide');
@@ -195,7 +227,7 @@ export default {
 
     },
     mounted() {
-        this.retrieveProducts();
+        this.refreshList();
     }
 };
 </script>

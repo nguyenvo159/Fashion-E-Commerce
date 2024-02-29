@@ -57,17 +57,11 @@
                                     v-model="productLocal.description" label="Mô tả" />
                                 <ErrorMessage class="error-feedback" name="description" />
                             </div>
-                            <div class="form-group">
-                                <button class="btn btn-primary" type="submit">Lưu</button>
-
-                            </div>
-
-
                         </div>
 
-                        <div class="form-control">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="" @click="show()" class="btn btn-primary">Save changes</button>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                            <button type="" class="btn btn-primary">Lưu</button>
                         </div>
                     </Form>
                 </div>
