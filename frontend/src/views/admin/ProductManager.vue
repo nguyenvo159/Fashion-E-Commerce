@@ -66,7 +66,8 @@
 
                     <td>{{ product.inventory }}</td>
                     <td>
-                        <a class="mr-2" data-toggle="modal" data-target="#update-product">Sửa</a>
+                        <a class="cursor-pointer mr-2" data-toggle="modal" data-target="#update-product"
+                            @click="confirmUpdate(product)">Sửa</a>
                         <a class="cursor-pointer" data-toggle="modal" data-target="#delete-product"
                             @click="confirmDelete(product)">Xóa</a>
                     </td>
@@ -75,8 +76,15 @@
             </tbody>
 
         </table>
-        <InputProduct :product="newProduct" @submit:product="createProduct" title="Thêm Sản Phẩm" modalId="add-product" />
-        <InputProduct title="Chỉnh Sửa Sản Phẩm" modalId="update-product" />
+        <!-- Thêm sản phẩm -->
+        <InputProduct :product="newProduct" @submit:product="createProduct" @close="closeModal" title="Thêm Sản Phẩm"
+            modalId="add-product" />
+
+        <!-- Sửa sản phẩm -->
+        <InputProduct :product="product" @submit:product="updateProduct" @close="closeModal" title="Chỉnh Sửa Sản Phẩm"
+            modalId="update-product" />
+
+        <!-- Thông báo -->
         <NotificationModal modalId="delete-product" title="Xác Nhận Xóa" :message="message" :confirmAction="deleteProduct"
             :productIdToDelete="productToDelete" />
     </div>
@@ -104,6 +112,7 @@ export default {
                 imgURL: "",
                 description: "",
             },
+            product: null,
             message: "",
             productToDelete: null,
         };
@@ -113,6 +122,10 @@ export default {
 
     },
     methods: {
+        closeModal() {
+            $('#add-product').modal('hide');
+            $('#update-product').modal('hide');
+        },
 
         getCategoryCount(category) {
             return this.products.filter(product => product.category == category).length;
@@ -135,6 +148,12 @@ export default {
             this.productToDelete = product._id;
             this.message = `Bạn có chắn chắn muốn xóa sản phẩm \"${product ? product.name : ''}\" ?`;
         },
+        confirmUpdate(product) {
+            this.product = product;
+            // console.log(this.product);
+        },
+
+        // Lấy hết Product
         async retrieveProducts() {
             try {
                 this.products = await ProductService.getAll();
@@ -142,13 +161,29 @@ export default {
                 console.log(error);
             }
         },
+
+        // Tạo product
         async createProduct(data) {
             try {
                 await ProductService.create(data);
+                this.retrieveProducts();
             } catch (error) {
                 console.log(error);
             }
         },
+
+        // Sửa product
+        async updateProduct(data) {
+            try {
+                await ProductService.update(this.product._id, data);
+                this.retrieveProducts();
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        ,
+
+        // Xóa product
         async deleteProduct(id) {
             try {
                 await ProductService.delete(id);
@@ -164,67 +199,4 @@ export default {
     }
 };
 </script>
-<style>
-body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-}
-
-.admin-sidebar {
-    position: fixed;
-    width: 250px;
-    height: 100%;
-    background-color: #343a40;
-    padding-top: 20px;
-    color: #ffffff;
-    transition: width 0.3s;
-}
-
-.admin-content {
-    margin-left: 275px;
-    padding: 20px;
-    transition: margin-left 0.3s;
-    /* Thêm hiệu ứng chuyển động cho Admin Content */
-}
-
-.admin-sidebar a {
-    color: #ffffff;
-    text-decoration: none;
-    padding: 10px;
-    display: block;
-}
-
-.admin-sidebar a:hover {
-    background-color: #555;
-    border-radius: 10px;
-}
-
-.admin-sidebar a.active {
-    background-color: #007bff;
-    border-radius: 10px;
-}
-
-.admin-sidebar i {
-    margin-right: 8px;
-    font-size: 16px;
-}
-
-
-/* Hiệu ứng width */
-
-@media (max-width: 768px) {
-    .admin-sidebar {
-        width: 65px;
-    }
-
-    .admin-sidebar span {
-        display: none;
-    }
-
-    .admin-content {
-        margin-left: 70px;
-    }
-
-}
-</style>
+<style></style>

@@ -6,6 +6,10 @@
 
 
 /* CSS */
+.error-feedback {
+  color: red;
+}
+
 .price {
   color: #d52220;
 }
