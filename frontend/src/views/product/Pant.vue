@@ -13,7 +13,7 @@
                         :to="{ name: 'Other' }" style="font-size: 18px;">Khác</router-link>
                 </div>
 
-                <ProductList :products="products" />
+                <ProductList v-if="products.length > 0" :products="products" />
             </div>
         </div>
     </div>
@@ -43,7 +43,7 @@ export default {
     methods: {
         async retrieveProducts() {
             try {
-                this.products = await ProductService.getAll();
+                this.products = await ProductService.getCategory('Pant');
             } catch (error) {
                 console.error('Error fetching products:', error);
             }
