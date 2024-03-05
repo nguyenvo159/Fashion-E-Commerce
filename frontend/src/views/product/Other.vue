@@ -13,7 +13,11 @@
                         :to="{ name: 'Other' }" style="font-size: 18px;">Khác</router-link>
                 </div>
 
-                <ProductList v-if="products.length > 0" :products="products" />
+                <ProductList v-if="products.length >0" :products="products" />
+                    <div v-else>
+                        <h5 class="mt-5 mb-5">Không có dữ liệu.</h5>
+                    </div>
+                <!-- <ProductList v-if="products.length > 0" :products="products" /> -->
             </div>
         </div>
     </div>

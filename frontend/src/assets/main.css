@@ -60,6 +60,7 @@ a.main-hover {
   top: 2%;
   right: -25%;
   transition: right 0.4s;
+  z-index: 999;
 }
 
 .card:hover .card-overlay {

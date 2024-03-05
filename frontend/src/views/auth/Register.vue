@@ -52,7 +52,7 @@ export default {
                 name: yup.string().required("Vui lòng nhập họ và tên").min(2, "Tên có ít nhất 2 kí tự."),
                 email: yup.string().email("Email không hợp lệ").required("Vui lòng nhập email"),
                 password: yup.string().required("Vui lòng nhập mật khẩu").min(6, "Mật khẩu phải chứa ít nhất 6 ký tự").max(16, "Mật khẩu có tối đa 16 kí tự.",),
-                're-password': yup.string().oneOf([yup.ref('password'), null], 'Mật khẩu không khớp'),
+                're-password': yup.string().required("Vui lòng nhập lại mật khẩu").oneOf([yup.ref('password'), null], 'Mật khẩu không khớp'),
             })
         };
     },

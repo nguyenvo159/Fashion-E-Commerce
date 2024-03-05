@@ -5,8 +5,8 @@
                 <div class="mt-3 mb-3 d-flex justify-content-center">
                     <router-link class="active-bottom p-3 pr-4 pl-4 font-weight-bold main-hover text-decoration-none"
                         :to="{ name: 'Product' }" style="font-size: 18px;">Tất cả sản phẩm</router-link>
-                    <router-link class="p-3 pr-4 pl-4 font-weight-bold main-hover text-decoration-none"
-                        :to="{ name: 'Shirt' }" style="font-size: 18px;">Áo</router-link>
+                    <a class="p-3 pr-4 pl-4 font-weight-bold main-hover text-decoration-none"
+                        hred style="font-size: 18px;">Áo</a>
                     <router-link class="p-3 pr-4 pl-4 font-weight-bold main-hover text-decoration-none"
                         :to="{ name: 'Pant' }" style="font-size: 18px;">Quần</router-link>
                     <router-link class="p-3 pr-4 pl-4 font-weight-bold main-hover text-decoration-none"

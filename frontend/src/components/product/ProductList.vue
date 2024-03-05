@@ -1,14 +1,16 @@
 <template>
-    <div class="row justify-content-start">
+    <div v-if="shouldRender" class="row justify-content-start">
         <!-- Card -->
         <div v-for="product in products" :key="product._id" class="mb-3 col-lg-3 col-md-4 col-6">
             <div class="card border-0">
-                <img class="card-img-top" :src="product.imgURL" style="height: 240px; width: auto; object-fit: contain;">
                 <a class="icon-cardplus card-overlay">
                     <i class="fa-solid fa-cart-plus"></i>
                 </a>
+                <img class="card-img-top" :src="product.imgURL" style="height: 240px; width: auto; object-fit: contain;">
                 <div class="card-body text-center text-justify">
-                    <h5 class="card-title main-hover">{{ product.name }}</h5>
+                    <router-link :to="{ name: 'Detail', params: { id: product._id } }" class="h5 card-title main-hover">
+                        {{ product.name }}
+                    </router-link>
                     <div class="row justify-content-around p-3">
                         <span class="price">${{ product.price }}</span>
                         <span class="compare-price">$99.99</span>
@@ -26,6 +28,16 @@ export default {
             type: Array,
             required: true
         }
+    },
+    data() {
+        return {
+            shouldRender: false
+        };
+    },
+    mounted() {
+        setTimeout(() => {
+            this.shouldRender = true;
+        }, 300); // Thực hiện sau 2 giây
     }
 };
 </script>

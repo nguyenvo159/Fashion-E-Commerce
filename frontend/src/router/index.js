@@ -8,9 +8,12 @@ import Product from "@/views/product/Product.vue";
 import Shirt from "@/views/product/Shirt.vue";
 import Pant from "@/views/product/Pant.vue";
 import Other from "@/views/product/Other.vue";
+import Detail from "@/components/product/ProductDetail.vue";
 
 // Auth
 import Register from "@/views/auth/Register.vue";
+import Login from "@/views/auth/Login.vue";
+
 const routes = [
     {
         path: "/",
@@ -22,6 +25,8 @@ const routes = [
         name: "ProductManager",
         component: ProductManager,
     },
+
+    // Product
     {
         path: "/product",
         name: "Product",
@@ -42,12 +47,22 @@ const routes = [
         name: "Other",
         component: Other,
     },
+    {
+        path: "/:id",
+        name: "Detail",
+        component: Detail,
+    },
 
     // Auth
     {
         path: "/register",
         name: "Register",
         component: Register,
+    },
+    {
+        path: "/login",
+        name: "Login",
+        component: Login,
     },
 
 ]
