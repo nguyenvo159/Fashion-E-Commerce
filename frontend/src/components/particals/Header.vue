@@ -10,14 +10,14 @@
             <ul class="mx-auto navbar-nav">
                 <li class="p-2 mr-3 ml-3 nav-item">
                     <router-link  :to="{name: 'Home'}" class="main-hover f-24">
-                        Trang Chủ
+                        TRANG CHỦ
                     </router-link>
                 </li>
 
                 <li class="p-2 mr-3 ml-3 nav-item dropdown">
-                    <a class="main-hover f-24 dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                    <a class="main-hover f-24 " href="#" role="button" data-toggle="dropdown"
                         aria-expanded="false">
-                        Sản Phẩm
+                        SẢN PHẤM
                     </a>
                     <div class="pb-0 mt-2 dropdown-menu border-0 rounded-0 bg-light">
                         <router-link :to="{ name: 'Product' }" class="dropdown-item">
@@ -37,21 +37,21 @@
                     </div>
                 </li>
                 <li class="p-2 mr-3 ml-3 nav-item">
-                    <a href="/about" class="main-hover f-24">About us</a>
+                    <router-link :to="{name: 'About'}" class="main-hover f-24">ABOUT US</router-link>
                 </li>
-                <li class="p-2 mr-3 ml-3 nav-item" v-if="isLoggedIn">
-                    <a href="/" class="main-hover f-24"> Quản trị</a>
-                </li>
-                <li class="p-2 mr-3 ml-3 nav-item" v-if="!isLoggedIn">
-                    <a href="/login" class="main-hover f-24">Đăng nhập </a>
+                <li class="p-2 mr-3 ml-3 nav-item" v-if="isAdmin">
+                    <router-link :to="{name: 'UserManager'}" class="main-hover f-24" >QUẢN TRỊ</router-link>
                 </li>
                 <li class="p-2 mr-3 ml-3 nav-item" v-if="!isLoggedIn">
-                    <a href="/register" class="main-hover f-24">Register</a>
+                    <a href="/login" class="main-hover f-24">ĐĂNG NHẬP </a>
+                </li>
+                <li class="p-2 mr-3 ml-3 nav-item" v-if="!isLoggedIn">
+                    <a href="/register" class="main-hover f-24">ĐĂNG KÝ</a>
                 </li>
 
                 <li class="p-2 mr-3 ml-3 nav-item" v-if="isLoggedIn">
                     <a href="/" class="main-hover f-24"><i class="fa-solid fa-right-from-bracket"></i>
-                        Logout</a>
+                        ĐĂNG XUẤT</a>
                 </li>
             </ul>
         </div>
@@ -73,14 +73,13 @@
 
         </div>
     </nav>
-    <button @click="getUser" class="ml-3 text-dark" v-if="isLoggedIn">
-        <i class="fa-solid fa-user fa-lg"></i>
-    </button>
-    <div v-if="user">
+    <!-- <div v-if="user">
         <p>Tên người dùng: {{ user.name }}</p>
         <p>Email: {{ user.email }}</p>
+        <p>Admin: {{ user.isAdmin }}</p>
+        <p>Admin: {{ this.$store.getters.isAdmin }}</p>
         
-    </div>
+    </div> -->
 
 </template>
 
@@ -91,6 +90,9 @@ export default {
         
         isLoggedIn(){
             return this.$store.getters.isLoggedIn;
+        },
+        isAdmin(){
+            return this.$store.getters.isAdmin;
         },
         user(){
             return this.$store.getters.getUser;

@@ -1,8 +1,10 @@
 import { createWebHistory, createRouter } from "vue-router";
+import store from "@/store/index.js";
 
 import Home from "@/views/Home.vue";
-
-import ProductManager from "@/views/admin/DashBoard.vue";
+import About from "@/views/About.vue";
+import ProductManager from "@/views/admin/ProductManager.vue";
+import UserManager from "@/views/admin/UserManager.vue";
 
 import Product from "@/views/product/Product.vue";
 import Shirt from "@/views/product/Shirt.vue";
@@ -21,9 +23,25 @@ const routes = [
         component: Home,
     },
     {
+        path: "/about",
+        name: "About",
+        component: About,
+    },
+
+    // Admin
+
+    {
         path: "/admin/product",
         name: "ProductManager",
         component: ProductManager,
+        meta: { requiresAuth: true, requiresAdmin: true }
+    },
+
+    {
+        path: "/admin/user",
+        name: "UserManager",
+        component: UserManager,
+        meta: { requiresAuth: true, requiresAdmin: true }
     },
 
     // Product
@@ -72,4 +90,22 @@ const router = createRouter({
     routes,
 });
 
+router.beforeEach((to, from, next) => {
+    const isLoggedIn = store.getters.isLoggedIn;
+    const isAdmin = store.getters.isAdmin;
+
+    if (to.meta.requiresAuth) {
+        if (!isLoggedIn) {
+            next({ name: "Login" });
+        } else {
+            if (to.meta.requiresAdmin && !isAdmin) {
+                next({ name: "Home" });
+            } else {
+                next();
+            }
+        }
+    } else {
+        next();
+    }
+});
 export default router;

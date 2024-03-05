@@ -1,20 +1,36 @@
 <template>
-  <div class="container">
-    <h2>Đăng nhập</h2>
-    <Form @submit="login" :validation-schema="validationSchema">
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <Field type="email" class="form-control" id="email" v-model="email" name="email" />
-        <ErrorMessage class="error-feedback" name="email" />
+  <div class="container-fluid mb-5">
+    <div class="row">
+      
+      <div class="mt-3 col-lg-6 row justify-content-center align-items-flex-start d-none d-lg-flex">
+        <img src="https://img.freepik.com/free-vector/mobile-login-concept-illustration_114360-83.jpg" alt="" 
+          class="img-fluid mb-3 pt-3 w-75">
+            
       </div>
-      <div class="form-group">
-        <label for="password">Mật khẩu:</label>
-        <Field type="password" class="form-control" id="password" v-model="password" name="password" />
-        <ErrorMessage class="error-feedback" name="password" />
-      <div v-if="loginError" class="error-feedback mt-2">{{ loginError }}</div>
+
+      <div class="col-lg-6 row justify-content-center aligh-item-center">
+        <h2 class="mt-5 text-center w-100">ĐĂNG NHẬP</h2>
+        <div class="w-75">
+          <Form @submit="login" :validation-schema="validationSchema">
+            <div class="form-group">
+              <label for="email">Email:</label>
+              <Field type="email" class="form-control rounded-0" id="email" v-model="email" name="email" />
+              <ErrorMessage class="error-feedback" name="email" />
+            </div>
+            <div class="form-group">
+              <label for="password">Mật khẩu:</label>
+              <Field type="password" class="form-control rounded-0" id="password" v-model="password" name="password" />
+              <ErrorMessage class="error-feedback" name="password" />
+            <div v-if="loginError" class="error-feedback mt-2">{{ loginError }}</div>
+            </div>
+            <button type="submit" class="w-100 btn btn-primary rounded-0">Đăng nhập</button>
+          </Form>
+          <p class="mt-2">Bạn chưa có tài khoản? <router-link :to="{name: 'Register'}">Đăng ký ngay</router-link></p>
+        </div>
       </div>
-      <button type="submit" class="btn btn-primary">Đăng nhập</button>
-    </Form>
+
+    </div>
+    
   </div>
 </template>
 
@@ -69,5 +85,7 @@ export default {
 </script>
 
 <style scoped>
-/* Định dạng CSS của component */
+.form-control{
+  box-shadow: none;
+}
 </style>

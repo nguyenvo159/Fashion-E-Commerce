@@ -6,11 +6,18 @@ export default {
     Header,
     Footer,
   },
+  computed: {
+    isAdmin(){
+      const currentRouteName = this.$route.name;
+      return currentRouteName === 'UserManager' || currentRouteName === 'ProductManager';
+    },
+  }
+  
 }
 </script>
 
 <template>
-  <Header />
+  <Header  v-if="!isAdmin"/>
 
   <div id="app">
     <router-view />

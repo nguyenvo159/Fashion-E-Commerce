@@ -25,6 +25,10 @@ const store = createStore({
         isLoggedIn(state) {
             return state.user !== null; // Kiểm tra xem người dùng đã đăng nhập chưa
         },
+        isAdmin(state) {
+            return state.user !== null && state.user.isAdmin;
+        },
+
         getUser(state) {
             return state.user;
         },

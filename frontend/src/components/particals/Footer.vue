@@ -1,12 +1,12 @@
 <template>
     <footer class="footer">
-        <div class="container-fluid pt-5 mt-5 p-3 bg-dark text-white">
+        <div class="container-fluid pt-5 p-3 bg-dark text-white">
             <div class="row justify-content-center font-14px">
                 <h4 class="col-10 mb-4 ml-5" style=" color: var(--main-color); letter-spacing: 2px;"><b>AMIRI -
                         LOCAL BRAND</b>
                 </h4>
 
-                <div class="col-md-4 col-12 row justify-content-center">
+                <div class="col-lg-4 col-12 row justify-content-center">
                     <div>
                         <h5 class=" mb-3">
                             <i class="fa-solid fa-location-dot fa-lg mr-1" style="color: #ffffff;"></i>
@@ -22,7 +22,7 @@
 
                     </div>
                 </div>
-                <div class="col-md-3 col-6 row justify-content-center">
+                <div class="col-lg-3 col-6 row justify-content-center">
                     <div>
                         <h4>Liên hệ</h4>
                         <p><b>Theo dõi chúng tôi tại:</b> <br>
@@ -52,7 +52,7 @@
                         </p>
                     </div>
                 </div>
-                <div class=" col-md-3 col-6 row justify-content-center">
+                <div class=" col-lg-3 col-6 row justify-content-center">
                     <div>
                         <h4 class="">About Us</h4>
                         <ul class="list-unstyled">

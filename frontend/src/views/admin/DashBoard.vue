@@ -1,34 +1,28 @@
 <template>
-    <div class="container-fluid">
-        <div class="row" style="background-color: lightcyan;">
+
             <!-- Admin Sidebar -->
             <div class="col-lg-3 admin-sidebar" style="border-radius: 0 25px 0 0;">
 
                 <h3 style="height: 52px;"><span>Quản Trị</span></h3>
 
                 <a href="admin.html" class=""><i class="fas fa-chart-bar"></i><span>Thống Kê</span></a>
-                <a href="user.html" class=""><i class="fas fa-user"></i><span>User</span></a>
-                <a href="product.html" class="active"><i class="fas fa-box"></i><span>Product</span></a>
+                <router-link :to="{name: 'UserManager'}" :class="{'active': type == 'User'}"><i class="fas fa-user"></i><span>User</span></router-link>
+                <router-link :to="{name: 'ProductManager'}" :class="{'active': type == 'Product'}"><i class="fas fa-box"></i><span>Product</span></router-link>
                 <a href="order.html" class=""><i class="fas fa-shopping-cart"></i><span>Order</span></a>
-                <a href="#" class=""><i class="fas fa-sign-out-alt"></i><span>Thoát</span></a>
+                <router-link :to="{name: 'Home'}" class=""><i class="fas fa-sign-out-alt"></i><span>Thoát</span></router-link>
             </div>
 
-            <ProductManager />
+            <!-- <ProductManager /> -->
 
-        </div>
-    </div>
 </template>
-
 <script>
-import ProductManager from '@/views/admin/ProductManager.vue';
-
 export default {
-    components: {
-        ProductManager,
+    props: {
+        type: {type: String, required: true },
     }
 }
-
 </script>
+
 <style>
 body {
     font-family: 'Arial', sans-serif;

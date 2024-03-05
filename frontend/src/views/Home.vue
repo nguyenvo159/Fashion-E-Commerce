@@ -44,28 +44,29 @@
         </div>
         <div class="row mt-0 p-0 w-100">
             <div class="col-10 offset-1">
-                <!-- <router-link :to="{ name: 'productShirt' }" class="main-hover"> -->
-                <h4 class="mt-3">
-                    Shirt
-                </h4>
-                <!-- </router-link> -->
+                <router-link :to="{ name: 'Shirt' }" class="main-hover">
+                    <h4 class="mt-3">
+                        Áo thun
+                    </h4>
+                </router-link>
 
                 <ProductList v-if="shirts.length > 0" :products="shirts" />
                 <p v-else>Don't have any shirt.</p>
 
-                <hr>
 
-                <!-- <router-link :to="{ name: 'productPant' }" class="main-hover"> -->
+                <router-link :to="{ name: 'Pant' }" class="main-hover">
                 <h4 class="mt-3">
-                    Pant
+                    Quần
                 </h4>
-                <!-- </router-link> -->
+                </router-link>
                 <ProductList v-if="pants.length > 0" :products="pants" />
                 <p v-else>Don't have any pant.</p>
 
-                <h4 class="mt-3">
-                    Other
-                </h4>
+                <router-link :to="{ name: 'Other' }" class="main-hover">
+                    <h4 class="mt-3">
+                        Phụ kiện
+                    </h4>
+                </router-link>
                 <!-- </router-link> -->
                 <ProductList v-if="others.length > 0" :products="others" />
                 <p v-else>Don't have any other.</p>

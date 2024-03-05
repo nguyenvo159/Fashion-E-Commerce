@@ -14,7 +14,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" @click="confirmAction(productIdToDelete)"
+                    <button type="button" class="btn btn-primary" @click="confirmAction(idToDelete)"
                         data-dismiss="modal">Xác nhận </button>
                 </div>
             </div>
@@ -29,7 +29,7 @@ export default {
         title: { type: String, default: "Thông báo" },
         message: { type: String, required: true },
         confirmAction: { type: Function, required: true },
-        productIdToDelete: { type: String },
+        idToDelete: { type: String },
     }
 };
 </script>

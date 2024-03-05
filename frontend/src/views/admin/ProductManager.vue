@@ -1,96 +1,101 @@
 <template>
-    <div class="col-lg-9 col-12 admin-content">
-        <h1 class="mb-4">Quản lý sản phẩm </h1>
-        <div class="row mt-4">
-            <div class="mb-3 col-lg-3 col-md-6">
-                <div class="card shadow rounded-0 bg-primary text-white">
-                    <div class="card-body">
-                        <h5 class="card-title">Tổng</h5>
-                        <p class="card-text">{{ products.length }}</p>
+    <div class="container-fluid pb-4" style="background-color: lightcyan;">
+        <div class="row" >
+            <DashBoard type="Product"/>
+            <div id="dv" class="col-lg-9 col-12 admin-content">
+                <h1 class="mb-4">Quản lý sản phẩm </h1>
+                <div class="row mt-4">
+                    <div class="mb-3 col-lg-3 col-md-6">
+                        <div class="card shadow rounded-0 bg-primary text-white">
+                            <div class="card-body">
+                                <h5 class="card-title">Tổng</h5>
+                                <p class="card-text">{{ products.length }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 col-lg-3 col-md-6">
+                        <div class="card shadow rounded-0 bg-warning text-white">
+                            <div class="card-body">
+                                <h5 class="card-title">Áo</h5>
+                                <p class="card-text">{{ getCategoryCount('Shirt') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 col-lg-3 col-md-6">
+                        <div class="card shadow rounded-0 bg-success text-white">
+                            <div class="card-body">
+                                <h5 class="card-title">Quần</h5>
+                                <p class="card-text">{{ getCategoryCount('Pant') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 col-lg-3 col-md-6">
+                        <div class="card shadow rounded-0 bg-danger text-white">
+                            <div class="card-body">
+                                <h5 class="card-title">Khác</h5>
+                                <p class="card-text">{{ getCategoryCount('Other') }}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="mb-3 col-lg-3 col-md-6">
-                <div class="card shadow rounded-0 bg-warning text-white">
-                    <div class="card-body">
-                        <h5 class="card-title">Áo</h5>
-                        <p class="card-text">{{ getCategoryCount('Shirt') }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="mb-3 col-lg-3 col-md-6">
-                <div class="card shadow rounded-0 bg-success text-white">
-                    <div class="card-body">
-                        <h5 class="card-title">Quần</h5>
-                        <p class="card-text">{{ getCategoryCount('Pant') }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="mb-3 col-lg-3 col-md-6">
-                <div class="card shadow rounded-0 bg-danger text-white">
-                    <div class="card-body">
-                        <h5 class="card-title">Khác</h5>
-                        <p class="card-text">{{ getCategoryCount('Other') }}</p>
-                    </div>
-                </div>
+                <!-- Thêm sản phẩm  -->
+                <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#add-product">Thêm
+                    Sản phẩm</button>
+
+                <button class="btn mb-3 ml-3 m" style="box-shadow: none;" @click="refreshList()">
+                    <i class="main-hover fa-solid fa-rotate-right" style="font-size: 24px;"></i></button>
+
+                <InputSearch v-model="searchText" />
+
+                <table class="table shadow">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="align-middle text-center">STT</th>
+                            <th><a class="main-hover" @click="sortProductsByName()">Tên</a></th>
+                            <th><a class="main-hover" @click="sortProductsByCategory()">Loại</a></th>
+                            <th>Giá</th>
+                            <th>Ngày thêm</th>
+                            <th>Ngày sửa</th>
+                            <th class="align-middle text-center">Số lượng</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <div v-if="products.length === 0">No products available.</div>
+                    <tbody v-else>
+
+                        <tr v-for="(product, index) in filteredProducts" :key="product._id" class="product-item">
+                            <td class="align-middle text-center">{{ index + 1 }}</td>
+                            <td>{{ product.name }}</td>
+                            <td>{{ product.category }}</td>
+                            <td>{{ product.price }}</td>
+                            <td>{{ formatDate(product.createdAt) }}</td>
+                            <td>{{ formatDate(product.updatedAt) }}</td>
+
+                            <td class="align-middle text-center">{{ product.inventory }}</td>
+                            <td>
+                                <a class="cursor-pointer mr-2" data-toggle="modal" data-target="#update-product"
+                                    @click="confirmUpdate(product)">Sửa</a>
+                                <a class="cursor-pointer" data-toggle="modal" data-target="#delete-product"
+                                    @click="confirmDelete(product)">Xóa</a>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+                <!-- Thêm sản phẩm -->
+                <InputProduct :product="newProduct" @submit:product="createProduct" @close="closeModal" title="Thêm Sản Phẩm"
+                    modalId="add-product" />
+
+                <!-- Sửa sản phẩm -->
+                <InputProduct :product="product" @submit:product="updateProduct" @close="closeModal" title="Chỉnh Sửa Sản Phẩm"
+                    modalId="update-product" />
+
+                <!-- Thông báo -->
+                <NotificationModal modalId="delete-product" title="Xác Nhận Xóa" :message="message" :confirmAction="deleteProduct"
+                    :idToDelete="productToDelete" />
             </div>
         </div>
-        <!-- Thêm sản phẩm  -->
-        <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#add-product">Thêm
-            Sản phẩm</button>
-
-        <button class="btn mb-3 ml-3 m" style="box-shadow: none;" @click="refreshList()">
-            <i class="main-hover fa-solid fa-rotate-right" style="font-size: 24px;"></i></button>
-
-        <InputSearch v-model="searchText" />
-
-        <table class="table shadow">
-            <thead class="thead-light">
-                <tr>
-                    <th class="align-middle text-center">STT</th>
-                    <th><a class="main-hover" @click="sortProductsByName()">Tên</a></th>
-                    <th><a class="main-hover" @click="sortProductsByCategory()">Loại</a></th>
-                    <th>Giá</th>
-                    <th>Ngày thêm</th>
-                    <th>Ngày sửa</th>
-                    <th class="align-middle text-center">Số lượng</th>
-                    <th>Thao tác</th>
-                </tr>
-            </thead>
-            <div v-if="products.length === 0">No products available.</div>
-            <tbody v-else>
-
-                <tr v-for="(product, index) in filteredProducts" :key="product._id" class="product-item">
-                    <td class="align-middle text-center">{{ index + 1 }}</td>
-                    <td>{{ product.name }}</td>
-                    <td>{{ product.category }}</td>
-                    <td>{{ product.price }}</td>
-                    <td>{{ formatDate(product.createdAt) }}</td>
-                    <td>{{ formatDate(product.updatedAt) }}</td>
-
-                    <td class="align-middle text-center">{{ product.inventory }}</td>
-                    <td>
-                        <a class="cursor-pointer mr-2" data-toggle="modal" data-target="#update-product"
-                            @click="confirmUpdate(product)">Sửa</a>
-                        <a class="cursor-pointer" data-toggle="modal" data-target="#delete-product"
-                            @click="confirmDelete(product)">Xóa</a>
-                    </td>
-                </tr>
-
-            </tbody>
-
-        </table>
-        <!-- Thêm sản phẩm -->
-        <InputProduct :product="newProduct" @submit:product="createProduct" @close="closeModal" title="Thêm Sản Phẩm"
-            modalId="add-product" />
-
-        <!-- Sửa sản phẩm -->
-        <InputProduct :product="product" @submit:product="updateProduct" @close="closeModal" title="Chỉnh Sửa Sản Phẩm"
-            modalId="update-product" />
-
-        <!-- Thông báo -->
-        <NotificationModal modalId="delete-product" title="Xác Nhận Xóa" :message="message" :confirmAction="deleteProduct"
-            :productIdToDelete="productToDelete" />
     </div>
 </template>
 
@@ -100,9 +105,11 @@ import ProductService from '@/services/product.service';
 import InputSearch from '@/components/InputSearch.vue';
 import InputProduct from '@/components/admin/InputProduct.vue';
 import NotificationModal from '@/components/NotificationModal.vue';
+import DashBoard from './DashBoard.vue';
 
 export default {
     components: {
+        DashBoard,
         InputSearch,
         InputProduct,
         NotificationModal,

@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row">
             <div id="dv" :class="{ 'col-10 offset-1': screenWidth >= 450, 'col-11': screenWidth < 450 }">
-                <div class="mt-3 mb-5 d-flex justify-content-center">
+                <div class="mt-2 mb-2 d-flex justify-content-center">
                     <router-link class="active-bottom p-3 pr-4 pl-4 font-weight-bold main-hover text-decoration-none"
                         :to="{ name: 'Product' }" style="font-size: 18px;">Tất cả sản phẩm</router-link>
                     <router-link class="p-3 pr-4 pl-4 font-weight-bold main-hover text-decoration-none"
@@ -59,4 +59,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+#dv{
+    min-height: 500px;
+}
+</style>

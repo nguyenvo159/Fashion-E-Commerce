@@ -2,10 +2,10 @@
     <div class="container-fluid">
         <div class="row">
             <div id="dv" :class="{ 'col-10 offset-1': screenWidth >= 450, 'col-11': screenWidth < 450 }">
-                <div class="mt-3 mb-3 d-flex justify-content-center">
-                    <router-link class="active-bottom p-3 pr-4 pl-4 font-weight-bold main-hover text-decoration-none"
+                <div class="mt-2 mb-2 d-flex justify-content-center">
+                    <router-link class="p-3 pr-4 pl-4 font-weight-bold main-hover text-decoration-none"
                         :to="{ name: 'Product' }" style="font-size: 18px;">Tất cả sản phẩm</router-link>
-                    <a class="p-3 pr-4 pl-4 font-weight-bold main-hover text-decoration-none"
+                    <a class="active-bottom p-3 pr-4 pl-4 font-weight-bold main-hover text-decoration-none"
                         hred style="font-size: 18px;">Áo</a>
                     <router-link class="p-3 pr-4 pl-4 font-weight-bold main-hover text-decoration-none"
                         :to="{ name: 'Pant' }" style="font-size: 18px;">Quần</router-link>
