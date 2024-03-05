@@ -14,7 +14,7 @@ exports.register = async (req, res, next) => {
         const existingUser = await userService.getUserByEmail(email);
 
         if (existingUser) {
-            return res.status(400).json({ message: "Email is already registered" });
+            return res.status(400).json({ success: false, message: "Email is already registered" });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -126,9 +126,3 @@ exports.getByEmail = async (req, res, next) => {
         return next(new Error("An error occurred while fetching users"));
     }
 }
-
-exports.logout = async (req, res, next) => {
-    res.clearCookie("token");
-
-    return "Logout";
-};

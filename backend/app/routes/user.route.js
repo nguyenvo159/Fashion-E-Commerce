@@ -7,17 +7,19 @@ const isAdminAuth = require("../middleware/isAdminAuth");
 
 router.post("/register", user.register);
 router.post("/login", user.login);
-router.get("/logout", user.logout);
 
 // Các endpoint cần xác thực JWT
 
 router.use(verifyToken);
-router.use(isAdminAuth);
 
-router.get("/", user.getAll);
-router.get("/:email", user.getByEmail);
 router.put("/:userId", user.updateUser);
+router.get("/:email", user.getByEmail);
 router.delete("/:userId", user.deleteUser);
+
+
+router.use(isAdminAuth);
+router.get("/", user.getAll);
+
 // router.get("/:userId", user.getById);
 
 module.exports = router;

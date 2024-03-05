@@ -43,9 +43,6 @@ exports.update = async (req, res, next) => {
         if (!product) {
             return res.status(404).json({ message: "Product not found" });
         }
-        if (product.name == updatedFields.name) {
-            return res.status(201).json({ message: "Product don't be same other information" })
-        }
         const updatedProduct = { ...product, ...updatedFields };
 
         await productService.updateProduct(productId, updatedProduct);
