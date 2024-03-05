@@ -14,11 +14,12 @@ router.use(verifyToken);
 
 router.put("/:userId", user.updateUser);
 router.get("/:email", user.getByEmail);
-router.delete("/:userId", user.deleteUser);
 
 
 router.use(isAdminAuth);
 router.get("/", user.getAll);
+router.delete("/:userId", user.deleteUser);
+
 
 // router.get("/:userId", user.getById);
 

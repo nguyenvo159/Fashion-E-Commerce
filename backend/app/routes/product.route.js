@@ -10,8 +10,8 @@ router.get("/", product.getAll);
 router.get("/category/:category", product.getByCategory);
 router.get("/:productId", product.getById);
 
-// router.use(verifyToken);
-// router.use(isAdminAuth);
+router.use(verifyToken);
+router.use(isAdminAuth);
 
 router.post("/", product.create);
 router.route("/:productId")

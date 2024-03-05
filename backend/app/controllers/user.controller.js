@@ -5,7 +5,7 @@ const UserService = require("../services/user.service");
 const MongoDB = require("../utils/mongodb.utils");
 
 exports.register = async (req, res, next) => {
-    const { name, email, password, isAdmin } = req.body;
+    const { name, email, password, phone, isAdmin } = req.body;
 
     try {
         const isAdminValue = typeof isAdmin === 'boolean' ? isAdmin : false;
@@ -18,7 +18,7 @@ exports.register = async (req, res, next) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const userId = await userService.createUser({ name, email, password: hashedPassword, isAdmin: isAdminValue });
+        const userId = await userService.createUser({ name, email, password: hashedPassword, phone, isAdmin: isAdminValue });
         return res.status(201).json({ message: "Register is successfully" });
     } catch (error) {
         console.error(error);
