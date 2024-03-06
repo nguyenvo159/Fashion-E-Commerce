@@ -8,6 +8,7 @@ const isAdminAuth = require("../middleware/isAdminAuth");
 router.post("/register", user.register);
 router.post("/login", user.login);
 
+router.get('/check-email/:email', user.checkEmailExists);
 // Các endpoint cần xác thực JWT
 
 router.use(verifyToken);

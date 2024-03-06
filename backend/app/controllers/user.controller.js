@@ -19,7 +19,7 @@ exports.register = async (req, res, next) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
         const userId = await userService.createUser({ name, email, password: hashedPassword, phone, isAdmin: isAdminValue });
-        return res.status(201).json({ message: "Register is successfully" });
+        return res.status(201).json({ success: true, message: "Register is successfully" });
     } catch (error) {
         console.error(error);
         return next(new Error("An error occurred while registering the user"));
@@ -58,10 +58,12 @@ exports.updateUser = async (req, res, next) => {
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-        if (user.name == updatedFields.name && user.password == updatedFields.password) {
-            return res.status(201).json({ message: "Nothing be change" })
-        }
         const updatedUser = { ...user, ...updatedFields };
+
+        if (updatedFields.password) {
+            const hashedPassword = await bcrypt.hash(updatedFields.password, 10);
+            updatedUser.password = hashedPassword;
+        }
 
         await userService.updateUser(userId, updatedUser);
 
@@ -97,21 +99,6 @@ exports.getAll = async (req, res, next) => {
     }
 }
 
-// exports.getById = async (req, res, next) => {
-//     try {
-//         const userService = new UserService(MongoDB.client);
-//         const user = await userService.getUserById(req.params.userId);
-
-//         if (!user) {
-//             return res.status(404).json({ message: "User not found" });
-//         }
-//         return res.status(200).json(user);
-//     } catch (error) {
-//         console.error(error);
-//         return next(new Error("An error occurred while fetching users"));
-//     }
-// }
-
 exports.getByEmail = async (req, res, next) => {
     try {
         const userService = new UserService(MongoDB.client);
@@ -126,3 +113,22 @@ exports.getByEmail = async (req, res, next) => {
         return next(new Error("An error occurred while fetching users"));
     }
 }
+
+exports.checkEmailExists = async (req, res, next) => {
+    try {
+        const userService = new UserService(MongoDB.client);
+        const user = await userService.getUserByEmail(req.params.email);
+
+        if (user) {
+            return res.status(200).json({ exists: true, message: "Email already exists" });
+        } else {
+            return res.status(200).json({ exists: false, message: "Email does not exist" });
+        }
+    } catch (error) {
+        console.error(error);
+        return next(new Error("An error occurred while checking email existence"));
+    }
+};
+
+
+
