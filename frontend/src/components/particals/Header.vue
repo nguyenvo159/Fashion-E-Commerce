@@ -2,7 +2,7 @@
 <template>
       <nav class="navbar navbar-expand-xl navbar-light bg-light position-relative">
         <a class="h4 p-2 ml-3 navbar-brand m-0 p-3" href="/" style="letter-spacing: 10px;">AMIRI</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+        <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -39,19 +39,17 @@
                 <li class="p-2 mr-3 ml-3 nav-item">
                     <router-link :to="{name: 'About'}" class="main-hover f-24">ABOUT US</router-link>
                 </li>
+                <li class="p-2 mr-3 ml-3 nav-item">
+                    <a  class="main-hover f-24">LIÊN HỆ</a>
+                </li>
                 <li class="p-2 mr-3 ml-3 nav-item" v-if="isAdmin">
                     <router-link :to="{name: 'UserManager'}" class="main-hover f-24" >QUẢN TRỊ</router-link>
                 </li>
                 <li class="p-2 mr-3 ml-3 nav-item" v-if="!isLoggedIn">
-                    <a href="/login" class="main-hover f-24">ĐĂNG NHẬP </a>
+                    <router-link :to="{name: 'Login'}" class="main-hover f-24">ĐĂNG NHẬP </router-link>
                 </li>
                 <li class="p-2 mr-3 ml-3 nav-item" v-if="!isLoggedIn">
-                    <a href="/register" class="main-hover f-24">ĐĂNG KÝ</a>
-                </li>
-
-                <li class="p-2 mr-3 ml-3 nav-item" v-if="isLoggedIn">
-                    <a href="/" class="main-hover f-24"><i class="fa-solid fa-right-from-bracket"></i>
-                        ĐĂNG XUẤT</a>
+                    <router-link :to="{name: 'Register'}" class="main-hover f-24">ĐĂNG KÝ</router-link>
                 </li>
             </ul>
         </div>
@@ -60,15 +58,32 @@
             style="right: 35px; top: 30px;">
 
             <div class=" d-flex align-items-center">
+                <div class="dropdown">
                 <a id="search-btn" class="ml-3 text-dark" href="#"><i class="fa-solid fa-magnifying-glass fa-lg"></i></a>
 
                 <a  class="ml-3 text-dark">
                     <i class="fa-solid fa-cart-shopping fa-lg"></i>
                 </a>
 
-                <a  class="ml-3 text-dark" v-if="isLoggedIn">
-                    <i class="fa-solid fa-user fa-lg"></i>
-                </a>
+                
+                    <a  class="ml-3 text-dark" v-if="isLoggedIn" role="button" data-toggle="dropdown"
+                        aria-expanded="false">
+                            <i class="fa-solid fa-user-gear fa-lg"></i>                            
+                    </a>
+                    <div class="w-100 pb-0 mt-3 dropdown-menu border-0 rounded-0 bg-light" v-if="isLoggedIn">
+                        <a class="dropdown-item pt-1 pb-1" href="">
+                            <i class="fa-solid fa-user"></i>
+                            &nbsp Tài Khoản</a>
+                        <div class="m-0 dropdown-divider"></div>
+                        <a class="dropdown-item pt-1 pb-1" href="">
+                            <i class="fa-solid fa-clipboard-list"></i>
+                            &nbsp&nbsp&nbsp Đơn Hàng</a>
+                        <div class="m-0 dropdown-divider"></div>
+                        <a class="dropdown-item pt-1 pb-1" href="/" >
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            &nbsp&nbsp Đăng Xuất</a>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -104,7 +119,6 @@ export default {
         logout(){
             localStorage.removeItem('token');
             this.$store.commit('LOGOUT');
-            this.$router.push('/');
         },
     }
 }

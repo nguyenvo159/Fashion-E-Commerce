@@ -45,9 +45,17 @@ class UserService {
         }
     }
 
+    async checkEmail(email) {
+        try {
+            return (await this.api.get(`/check-email/${email}`)).data
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     async update(id, user) {
         try {
-            return (await this.api.put(`/${id}`)).data
+            return (await this.api.put(`/${id}`, user)).data
         } catch (error) {
             console.log(error);
         }

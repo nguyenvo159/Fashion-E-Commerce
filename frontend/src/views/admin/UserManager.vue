@@ -44,6 +44,9 @@
                     </tbody>
 
                 </table>
+                <!-- Sửa thông tin User -->
+                <InputUser :user="user" @submit:user="updateUser" @close="closeModal" title="Cập Nhật Tài Khoản"
+                    modalId="update-user"/>
                 <!-- Thông báo -->
                 <NotificationModal modalId="delete-user" title="Xác Nhận Xóa" :message="message" :confirmAction="deleteUser"
                     :idToDelete="userToDelete" />
@@ -55,6 +58,7 @@
 <script>
 import UserService from '@/services/user.service';
 import InputSearch from '@/components/InputSearch.vue';
+import InputUser from '@/components/admin/InputUser.vue';
 import NotificationModal from '@/components/NotificationModal.vue';
 import DashBoard from './DashBoard.vue';
 
@@ -62,6 +66,7 @@ export default {
     components: {
         DashBoard,
         InputSearch,
+        InputUser,
         InputSearch,
         NotificationModal,
     },

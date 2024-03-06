@@ -101,25 +101,29 @@ export default {
     methods: {
         async registerUser() {
             try {
-                const response = await UserService.register(this.user);
+                const emailExists = await UserService.checkEmail(this.user.email);
+                if (emailExists.exists) {
+                    this.isEmailExists = true;
+                    return; 
+                }
 
-                // Đăng nhập
+                const response = await UserService.register(this.user);
+                console.log(response);
+
+                if (response.success){
                     const user = {email: this.user.email, password: this.user.password};
                     const result =  await UserService.login(user);
-
                     if(result){
                         const token = result.token;
                         await localStorage.setItem('token', token);
-                        const userData = await UserService.getByEmail(this.email);
+                        const userData = await UserService.getByEmail(this.user.email);
                         this.$store.commit('SET_USER',  userData, token);
                         
                         this.$router.push('/');
                     } 
+                }
             } catch (error) {
                 console.error("Đăng ký thất bại:", error);
-                if (error.response && error.response.status === 400 && error.response.data.message === "Email is already registered") {
-                    this.isEmailExists = true;
-                }
             }
         }
     }
@@ -128,7 +132,8 @@ export default {
   
 <style>
 .form-control{
-    box-shadow: none;
+    box-shadow: none !important;
+    outline: none !important;
   }
 </style>
   
