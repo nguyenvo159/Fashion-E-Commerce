@@ -1,6 +1,6 @@
 
 <template>
-      <nav class="navbar navbar-expand-xl navbar-light bg-light position-relative">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light position-relative">
         <a class="h4 p-2 ml-3 navbar-brand m-0 p-3" href="/" style="letter-spacing: 10px;">AMIRI</a>
         <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,11 +59,12 @@
 
             <div class=" d-flex align-items-center">
                 <div class="dropdown">
+
                 <a id="search-btn" class="ml-3 text-dark" href="#"><i class="fa-solid fa-magnifying-glass fa-lg"></i></a>
 
-                <a  class="ml-3 text-dark">
+                <router-link :to="{name: 'Cart'}" class="ml-3 text-dark">
                     <i class="fa-solid fa-cart-shopping fa-lg"></i>
-                </a>
+                </router-link>
 
                 
                     <a  class="ml-3 text-dark" v-if="isLoggedIn" role="button" data-toggle="dropdown"
@@ -79,7 +80,7 @@
                             <i class="fa-solid fa-clipboard-list"></i>
                             &nbsp&nbsp&nbsp Đơn Hàng</a>
                         <div class="m-0 dropdown-divider"></div>
-                        <a class="dropdown-item pt-1 pb-1" href="/" >
+                        <a class="dropdown-item pt-1 pb-1" @click="logout" >
                             <i class="fa-solid fa-right-from-bracket"></i>
                             &nbsp&nbsp Đăng Xuất</a>
                     </div>
@@ -119,6 +120,7 @@ export default {
         logout(){
             localStorage.removeItem('token');
             this.$store.commit('LOGOUT');
+            this.$router.push("/");
         },
     }
 }

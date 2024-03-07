@@ -9,7 +9,8 @@ export default {
   computed: {
     isAdmin(){
       const currentRouteName = this.$route.name;
-      return currentRouteName === 'UserManager' || currentRouteName === 'ProductManager';
+      return currentRouteName === 'UserManager' || currentRouteName === 'ProductManager'
+           || currentRouteName === 'OrderManager';
     },
   }
   

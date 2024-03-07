@@ -57,19 +57,25 @@
                         <div class="">
                             <label class="form-check-label size" for="S" @click="selectSize('S')"
                                 :class="{ 'selected-size': selectedSize === 'S' }">S</label>
-                            <input class="form-check-input d-none" type="radio" name="size" id="S" value="S">
+                            <input required class="form-check-input d-none" type="radio" name="size" id="S" value="S">
                         </div>
 
                         <div class="ml-4">
-                            <input class="form-check-input d-none" type="radio" name="size" id="M" value="M">
+                            <input required class="form-check-input d-none" type="radio" name="size" id="M" value="M">
                             <label class="form-check-label size" for="M" @click="selectSize('M')"
                                 :class="{ 'selected-size': selectedSize === 'M' }">M</label>
                         </div>
 
                         <div class="ml-4">
-                            <input class="form-check-input d-none" type="radio" name="size" id="L" value="L">
+                            <input required class="form-check-input d-none" type="radio" name="size" id="L" value="L">
                             <label class="form-check-label size" for="L" @click="selectSize('L')"
                                 :class="{ 'selected-size': selectedSize === 'L' }">L</label>
+                        </div>
+
+                        <div class="ml-4">
+                            <input required class="form-check-input d-none" type="radio" name="size" id="XL" value="XL">
+                            <label class="form-check-label size" for="XL" @click="selectSize('XL')"
+                                :class="{ 'selected-size': selectedSize === 'XL' }">XL</label>
                         </div>
                     </div>
 
@@ -80,6 +86,7 @@
                     </div>
 
                 </div>
+                <div v-if="errorSize"><p class="error-feedback">Vui lòng chọn size.</p></div>
                 <p><a data-toggle="modal" data-target="#instruction"
                         class="cursor-pointer text-decoration-none error-feedback"> + Hướng dẫn chọn size</a></p>
 
@@ -96,7 +103,7 @@
                             </button>
                         </div>
                         <input type="text" id="quantityDetail" name="quantity" class="form-control input-number text-center"
-                            value="1" min="1" max="100">
+                            value="1" @input="handleInput" min="1" max="20">
                         <div class="input-group-append">
                             <button class="btn border rounded-0 increase-quantity" @click="increaseQuantity">
                                 <i class="fas fa-plus"></i>
@@ -108,8 +115,8 @@
                     <span v-else class="ml-3 pt-2" style="color: #757575;"> Hết hàng</span>
                 </div>
 
-                <button v-if="product.inventory > 0" class="addFromDetai btn btn-dark pl-3 p-2 pr-3 rounded-0">Thêm vào
-                    giỏ</button>
+                <button v-if="product.inventory > 0"  class="btn btn-dark pl-3 p-2 pr-3 rounded-0"
+                    @click="addToCart">Thêm vào giỏ</button>
                 <button v-else class="addFromDetai btn btn-dark pl-3 p-2 pr-3 rounded-0">Hết hàng</button>
 
                 <!-- </form> -->
@@ -174,33 +181,54 @@
   
 <script>
 import ProductService from "@/services/product.service";
+import CartService from "@/services/cart.service";
 
 export default {
     data() {
         return {
             product: null,
-            selectedSize: null,
+            selectedSize: 'free-size',
+            errorSize: false,
         };
     },
     methods: {
         selectSize(size) {
-            // Set selectedSize to the clicked size
+            this.errorSize = false;
             this.selectedSize = size;
         },
-        // async addToCart() {
-        //     try {
-        //         const userId = localStorage.getItem('userId');
-        //         const productId = this.product._id;
-        //         const quantity = parseInt(document.getElementById('quantityDetail').value);
+        async addToCart() {
+            try {
+                const user = this.$store.getters.getUser;
+                if (!user){
+                    this.$router.push('/login');
+                }
 
-        //         await CartService.addToCart(userId, productId, quantity);
-        //         const updatedCart = await CartService.getCart(userId);
-        //         localStorage.setItem("cart", JSON.stringify(updatedCart));
-        //         window.location.href = "/cart";
-        //     } catch (error) {
-        //         console.error(error);
-        //     }
-        // },
+                const productId = this.product._id;
+                const quantity = parseInt(document.getElementById('quantityDetail').value);
+                    
+                if(this.product.category != 'Other' && this.selectedSize == 'free-size'){
+                    this.errorSize= true;
+                } else {
+                    await CartService.update(user._id, productId, quantity, this.selectedSize);
+                    this.$router.push('/cart');
+                }
+
+                
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        
+        handleInput(){
+            const quantityInput = document.getElementById('quantityDetail');
+            if (quantityInput < 1 ){
+                quantityInput.value = 1;
+            }  
+            if ( quantityInput <= 20 && quantityInput > this.product.inventor ){
+                quantityInput = this.product.inventory;
+            } 
+        },
+
         decreaseQuantity() {
             const quantityInput = document.getElementById('quantityDetail');
             let currentQuantity = parseInt(quantityInput.value);

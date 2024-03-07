@@ -3,7 +3,7 @@
         <div class="row" >
             <DashBoard type="Product"/>
             <div id="dv" class="col-lg-9 col-12 admin-content">
-                <h1 class="mb-4">Quản lý sản phẩm </h1>
+                <h1 class="mb-4">Quản Lý Sản Phẩm </h1>
                 <div class="row mt-4">
                     <div class="mb-3 col-lg-3 col-md-6">
                         <div class="card shadow rounded-0 bg-primary text-white">

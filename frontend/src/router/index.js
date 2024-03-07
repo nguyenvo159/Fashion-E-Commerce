@@ -5,6 +5,7 @@ import Home from "@/views/Home.vue";
 import About from "@/views/About.vue";
 import ProductManager from "@/views/admin/ProductManager.vue";
 import UserManager from "@/views/admin/UserManager.vue";
+import OrderManager from "@/views/admin/OrderManager.vue";
 
 import Product from "@/views/product/Product.vue";
 import Shirt from "@/views/product/Shirt.vue";
@@ -12,6 +13,8 @@ import Pant from "@/views/product/Pant.vue";
 import Other from "@/views/product/Other.vue";
 import Detail from "@/components/product/ProductDetail.vue";
 
+
+import Cart from "@/views/cart/Cart.vue";
 // Auth
 import Register from "@/views/auth/Register.vue";
 import Login from "@/views/auth/Login.vue";
@@ -41,6 +44,13 @@ const routes = [
         path: "/admin/user",
         name: "UserManager",
         component: UserManager,
+        meta: { requiresAuth: true, requiresAdmin: true }
+    },
+
+    {
+        path: "/admin/order",
+        name: "OrderManager",
+        component: OrderManager,
         meta: { requiresAuth: true, requiresAdmin: true }
     },
 
@@ -81,6 +91,15 @@ const routes = [
         path: "/login",
         name: "Login",
         component: Login,
+    },
+
+    // Cart
+    {
+        path: "/cart",
+        name: "Cart",
+        component: Cart,
+        meta: { requiresAuth: true }
+
     },
 
 ]

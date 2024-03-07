@@ -6,7 +6,7 @@
                 <h1 class="mb-4">Quản lý Người Dùng </h1>
 
                 <div class="d-flex">
-                <InputSearch v-model="searchText" />
+                    <InputSearch v-model="searchText" />
 
                     <button class="btn pb-4 ml-3 m" style="box-shadow: none;" @click="refreshList()">
                         <i class="main-hover fa-solid fa-rotate-right" style="font-size: 24px;"></i></button>

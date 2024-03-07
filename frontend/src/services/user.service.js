@@ -3,6 +3,18 @@ import createApi from "./api.service";
 class UserService {
     constructor(baseUrl = "/api/auth") {
         this.api = createApi(baseUrl);
+        this.api.interceptors.request.use(
+            (config) => {
+                const authToken = localStorage.getItem('token');
+                if (authToken) {
+                    config.headers.Authorization = `${authToken}`;
+                }
+                return config;
+            },
+            (error) => {
+                return Promise.reject(error);
+            }
+        );
     }
 
     async register(user) {
