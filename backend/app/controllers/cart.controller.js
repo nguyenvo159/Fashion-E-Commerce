@@ -67,19 +67,17 @@ exports.getQuantity = async (req, res, next) => {
 exports.removeItem = async (req, res, next) => {
     try {
         const cartService = new CartService(MongoDB.client);
-        const { userId, productId } = req.params;
+        const { userId, productId, size } = req.params;
 
         // Kiểm tra xem ID người dùng từ token có khớp với ID từ tham số không
         if (req.user._id.toString() !== userId) {
             return res.status(403).json({ message: "Unauthorized access" });
         }
 
-        const result = await cartService.removeItem(userId, productId);
-        if (!result) {
-            res.status(404).json({ message: 'Item not found in cart' });
-        } else {
-            res.status(200).json({ message: 'Item removed successfully' });
-        }
+        const result = await cartService.removeItem(userId, productId, size);
+
+        res.status(200).json({ message: result });
+
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });

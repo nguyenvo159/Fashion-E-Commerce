@@ -10,7 +10,7 @@ class CartService {
         this.client = client;
     }
 
-    async updateCart(userId, productId, quantity = 1, size = "freesize") {
+    async updateCart(userId, productId, quantity = 1, size = "free-size") {
         if (!ObjectId.isValid(userId) || !ObjectId.isValid(productId)) {
             throw new Error("Invalid userId or productId");
         }
@@ -40,7 +40,7 @@ class CartService {
             return "Add new cart and product successfully";
         }
 
-        const existingItemIndex = cart.items.findIndex(item => item.productId.equals(new ObjectId(productId)));
+        const existingItemIndex = cart.items.findIndex(item => item.productId.equals(new ObjectId(productId)) && item.size == size);
 
         // Nếu sản phẩm chưa tồn tại, thêm mới vào giỏ hàng
         if (existingItemIndex == -1) {
@@ -74,7 +74,7 @@ class CartService {
 
         await this.Cart.findOneAndUpdate(filter, update, { returnDocument: "after" });
 
-        return "Add Product successfully";
+        return "Updated Product successfully";
     }
 
     async getQuantity(userId, productId) {
@@ -141,17 +141,23 @@ class CartService {
         return null;
     }
 
-    async removeItem(userId, productId) {
+    async removeItem(userId, productId, size) {
         if (!ObjectId.isValid(userId) || !ObjectId.isValid(productId)) {
             throw new Error("Invalid userId or productId");
         }
 
+        const product = await this.product.getProductById(productId);
+        if (!product) {
+            throw new Error("Product not found");
+        }
+
+
         const filter = { userId: new ObjectId(userId) };
-        const update = { $pull: { items: { productId: new ObjectId(productId) } } };
+        const update = { $pull: { items: { productId: new ObjectId(productId), size: size } } };
 
-        const result = await this.Cart.findOneAndUpdate(filter, update, { returnDocument: "after" });
+        await this.Cart.findOneAndUpdate(filter, update, { returnDocument: "after" });
 
-        return result.value;
+        return "Removed item succussfully";
     }
 
     async clearCart(userId) {
