@@ -103,6 +103,7 @@ export default {
         },
         closeModal() {
             $('#update-order').modal('hide');
+            this.retrieveOrders();
         },
         formatDate(date) {
             const formattedDate = format(new Date(date), "dd/MM/yyyy HH:mm");
@@ -121,12 +122,19 @@ export default {
         async updateOrder(status) {
             try {
                 await OrderService.update(this.order._id, status);
-                // this.retrieveOrders();
-                this.$router.push('/admin/order');
+                this.retrieveOrders();
             } catch (error) {
                 console.log(error);
             }
         },
+        async delete(){
+            try {
+                await OrderService.delete(this.order._id);
+                this.retrieveOrders();
+            } catch (error) {
+                console.log(error);
+            }
+        }
 
     },
     mounted() {

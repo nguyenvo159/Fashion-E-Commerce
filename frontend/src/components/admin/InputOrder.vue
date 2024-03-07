@@ -13,7 +13,7 @@
                         <div class="row">
                             <div class="col-lg-6 form-group">
                                 <label for="name">Tên</label>
-                                <input class="form-control" id="name" name="name" v-model="orderLocal.name" type="text" />
+                                <input class="form-control" id="name" name="name" v-model="orderLocal.name" type="text" readonly />
                             </div>
 
                             <div class="col-lg-6 form-group">
@@ -28,23 +28,23 @@
 
                             <div class="col-lg-6 form-group">
                                 <label for="createdAt">Ngày đặt</label>
-                                <input class="form-control" id="createdAt" name="createdAt" v-model="orderLocal.createdAt" type="text" />
+                                <input class="form-control" id="createdAt" name="createdAt" :value="formatDate(orderLocal.createdAt)" type="text" readonly />
                             </div>
 
                             <div class="col-lg-6 form-group">
                                 <label for="phone">Số điện thoại</label>
-                                <input class="form-control" id="phone" name="phone" v-model="orderLocal.phone" type="text" />
+                                <input class="form-control" id="phone" name="phone" v-model="orderLocal.phone" type="text" readonly />
                             </div>
 
                             <div class="col-lg-12 form-group">
                                 <label for="address">Địa chỉ</label>
-                                <textarea class="form-control" id="address" name="address" v-model="orderLocal.address"
-                                    type="text" />
+                                <textarea class="form-control" id="address" name="address" v-model="orderLocal.address "
+                                    type="text" readonly />
                             </div>
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                            <button type="button" class="btn btn-secondary" @click="deleteOrder" >Xóa đơn hàng</button>
                             <button type="submit" class="btn btn-primary">Lưu</button>
                         </div>
                     </form>
@@ -58,6 +58,7 @@
 </template>
   
 <script>
+import { format } from 'date-fns';
 import OrderService from '@/services/order.service';
 
 export default {
@@ -84,11 +85,27 @@ export default {
         };
     },
     methods: {
-        submitOrder() {
+        formatDate(date) {
+            if (!date) return '';
+            const formattedDate = format(new Date(date), "HH:mm dd/MM/yyyy");
+            return formattedDate;
+        },
+        submitOrder(event) {
+            event.preventDefault();
             const status = {status: this.orderLocal.status};
             this.$emit('submit:order', status);
             this.$emit('close');
         },
+        async deleteOrder(){
+            try {
+                console.log(this.orderLocal);
+                await OrderService.delete(this.orderLocal._id);
+                this.$emit('close');
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
     },
 
 };
