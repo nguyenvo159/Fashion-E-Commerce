@@ -17,9 +17,9 @@
                     <thead class="thead-light">
                         <tr>
                             <th class="align-middle text-center">STT</th>
-                            <th><a class="main-hover" >Tên</a></th>
-                            <th><a class="main-hover" >Email</a></th>
-                            <th><a class="main-hover" >Số điện thoại</a></th>
+                            <th>Tên</th>
+                            <th>Email</th>
+                            <th>Số điện thoại</th>
                             <th>Phân Quyền</th>
                             <th>Thao tác</th>
                         </tr>

@@ -39,7 +39,7 @@
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-end">
-                                        <p class="price m-0 mt-2"> <b class="text-dark">Thành tiền:</b> ${{ (item.product.price*item.quantity) }}</p>
+                                        <p class="price m-0 mt-2"> <b class="text-dark">Thành tiền:</b> ${{ (item.product.price*item.quantity) ? (item.product.price*item.quantity).toFixed(2) : '0.00'  }}</p>
                                     </div>
                                 </div>
                 
@@ -60,7 +60,7 @@
             <div class="w-100 mb-5 mt-4 d-flex justify-content-between align-items-center">
                 <div>
                     <strong>Tổng tiền: </strong>
-                    <span  v-if="cart" class="price">{{ cart.total }} $</span>
+                    <span  v-if="cart" class="price">{{ cart.total ? cart.total.toFixed(2) : '0.00' }} $</span>
                     <span  v-else class="price">0.00 $</span>
 
                 </div>
@@ -80,32 +80,30 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <Form @submit="order" :validation-schema="orderFormSchema">
+                            <form @submit="order">
                                 <div class="row">
                                     <div class="col-lg-6 form-group">
                                         <label for="name">Tên</label>
-                                        <input class="form-control rounded-0" id="name" name="name" v-model="orderTemp.name" type="text" />
-                                        <ErrorMessage class="error-feedback" name="name" />
+                                        <input class="form-control rounded-0" id="name" name="name" v-model="orderTemp.name" type="text"
+                                        required min="2" />
                                     </div>
         
                                     <div class="col-lg-6 form-group">
                                         <label for="phone">Số điện thoại</label>
-                                        <input class="form-control rounded-0" id="phone" name="phone" v-model="orderTemp.phone" type="text" />
-                                        <ErrorMessage class="error-feedback" name="phone" />
+                                        <input class="form-control rounded-0" id="phone" name="phone" v-model="orderTemp.phone" type="tel"
+                                        required />
                                     </div>
         
                                     <div class=" col-12 form-group">
                                         <label for="address">Địa chỉ</label>
                                         <input class="form-control rounded-0" name="address" type="text"
-                                            v-model="orderTemp.address" label="Địa chỉ" />
-                                        <ErrorMessage class="error-feedback" name="address" />
+                                            v-model="orderTemp.address" label="Địa chỉ"  required/>
                                     </div>
 
                                     <div class=" col-12 form-group">
                                         <label for="note">Ghi chú</label>
-                                        <textarea class="form-control rounded-0" name="note" as="textarea"
+                                        <textarea class="form-control rounded-0" name="note" 
                                             v-model="orderTemp.note" label="Mô tả" />
-                                        <ErrorMessage class="error-feedback" name="note" />
                                     </div>
                                 </div>
         
@@ -113,7 +111,7 @@
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
                                     <button type="submit" class="btn btn-primary">Lưu</button>
                                 </div>
-                            </Form> 
+                            </form> 
                         </div>
 
                     </div>
@@ -125,18 +123,11 @@
 </template>
   
 <script>
-import * as yup from 'yup';
-import { Form, Field, ErrorMessage } from 'vee-validate';
 import CartService from "@/services/cart.service";
-import ProductService from "@/services/product.service";
+import OrderService from "@/services/order.service";
 
 
 export default {
-    component: {
-        Form,
-        Field,
-        ErrorMessage,
-    },
     data() {
         return {
             cart: {},
@@ -148,21 +139,6 @@ export default {
                 note: '',
             },
             screenWidth: window.innerWidth,
-            orderFormSchema: yup.object().shape({
-                name: yup.string()
-                                    .required("Vui lòng nhập họ và tên")
-                                    .min(2, "Tên có ít nhất 2 kí tự."),
-                phone: yup.string()
-                                    .required("Vui lòng nhập số điện thoại")
-                                    .matches(/^[0-9]+$/, "Số điện thoại chỉ được chứa các chữ số")
-                                    .min(9, "Số điện thoại phải có ít nhất 9 số")
-                                    .max(11, "Số điện thoại có tối đa 11 số"),
-                address: yup.string()
-                                    .required("Vui lòng nhập địa chỉ")
-                                    .min(5, "Tên có ít nhất 2 kí tự."),
-
-                                    
-            }),
         };
     },
     async mounted() {
@@ -190,6 +166,7 @@ export default {
                     this.cart = null;
                 }
             } catch (error) {
+                this.cart = null;
                 console.error('Error fetching cart:', error);
             }
         },
@@ -226,8 +203,17 @@ export default {
                 console.error(error);
             }
         },
-        async order(){
+        async order(event){
+            event.preventDefault();
 
+            try {
+                await OrderService.create(this.user._id, this.orderTemp.name, this.orderTemp.address, this.orderTemp.phone, this.orderTemp.note);
+                this.retrieveCart();
+                $('#orderNow').modal('hide');
+
+            } catch (error) {
+                console.error(error);
+            }
         },
         updateScreenWidth() {
             this.screenWidth = window.innerWidth;

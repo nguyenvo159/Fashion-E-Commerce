@@ -51,8 +51,8 @@
                     <thead class="thead-light">
                         <tr>
                             <th class="align-middle text-center">STT</th>
-                            <th><a class="main-hover" @click="sortProductsByName()">Tên</a></th>
-                            <th><a class="main-hover" @click="sortProductsByCategory()">Loại</a></th>
+                            <th><a class="cursor-pointer text-decoration-none" style="color: #495057;" @click="sortProductsByName()">Tên</a></th>
+                            <th><a class="cursor-pointer text-decoration-none" style="color: #495057;" @click="sortProductsByCategory()">Loại</a></th>
                             <th>Giá</th>
                             <th>Ngày thêm</th>
                             <th>Ngày sửa</th>

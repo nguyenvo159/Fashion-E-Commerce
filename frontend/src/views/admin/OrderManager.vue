@@ -19,7 +19,7 @@
                             <th>Mã</th>
                             <th>Tên</th>
                             <th>Liên hệ</th>
-                            <th>Ngày đặt</th>
+                            <th><a class="cursor-pointer text-decoration-none" @click="sortDate()" style="color: #495057;">Ngày đặt</a></th>
                             <th>Tổng tiền</th>
                             <th>Trạng thái</th>
                         </tr>
@@ -33,7 +33,7 @@
                             <td>{{ order.name }}</td>
                             <td>{{ order.phone }}, {{ order.address}}</td>
                             <td>{{ formatDate(order.createdAt) }}</td>
-                            <td>{{ order.total }}</td>
+                            <td>{{ order.total? order.total.toFixed(2) : '0.00' }}</td>
                             <td class="text-center">
                                 <a class="cursor-pointer font-italic text-decoration-none" data-toggle="modal" data-target="#update-order"
                                     @click="confirmUpdate(order)">{{ order.status }}</a>
@@ -70,6 +70,7 @@ export default {
             activeIndex: -1,
             searchText: "",
             order: null,
+            sortByDateAsc: true
         };
     },
     watch: {
@@ -80,8 +81,9 @@ export default {
     computed: {
         orderStrings() {
             return this.orders.map((order) => {
-                const { name, address, status, phone } = order;
-                return [name.toLowerCase(), address.toLowerCase(), status.toLowerCase(), phone].join("");
+                const { name, address, status, createdAt, phone } = order;
+                const date = this.formatDate(createdAt);
+                return [name.toLowerCase(), address.toLowerCase(), status.toLowerCase(), date.toLowerCase(), phone].join("");
             });
         },
         filteredOrders() {
@@ -111,6 +113,18 @@ export default {
         },
         confirmUpdate(order) {
             this.order = order;
+        },
+        sortDate() {
+            this.orders.sort((a, b) => {
+                const dateA = new Date(a.createdAt);
+                const dateB = new Date(b.createdAt);
+                if (this.sortByDateAsc) {
+                    return dateA - dateB; 
+                } else {
+                    return dateB - dateA; 
+                }
+            });
+            this.sortByDateAsc = !this.sortByDateAsc;
         },
         async retrieveOrders() {
             try {
