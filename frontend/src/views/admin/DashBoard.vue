@@ -5,7 +5,7 @@
 
                 <h3 style="height: 52px;"><span>Quản Trị</span></h3>
 
-                <router-link :to="{name: 'UserManager'}" :class="{'active': type == 'Analytics'}"><i class="fas fa-chart-bar"></i><span>Analytics</span></router-link>
+                <router-link :to="{name: 'Analytics'}" :class="{'active': type == 'Analytics'}"><i class="fas fa-chart-bar"></i><span>Analytics</span></router-link>
                 <router-link :to="{name: 'UserManager'}" :class="{'active': type == 'User'}"><i class="fas fa-user"></i><span>User</span></router-link>
                 <router-link :to="{name: 'ProductManager'}" :class="{'active': type == 'Product'}"><i class="fas fa-box"></i><span>Product</span></router-link>
                 <router-link :to="{name: 'OrderManager'}"  :class="{'active': type == 'Order'}"><i class="fas fa-shopping-cart"></i><span>Order</span></router-link>

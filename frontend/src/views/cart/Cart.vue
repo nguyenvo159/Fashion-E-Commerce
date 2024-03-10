@@ -242,6 +242,7 @@ export default {
                 await OrderService.create(this.user._id, this.orderTemp.name, this.orderTemp.address, this.orderTemp.phone, this.orderTemp.note);
                 this.retrieveCart();
                 $('#orderNow').modal('hide');
+                $this.$router.push('/order');
 
             } catch (error) {
                 console.error(error);

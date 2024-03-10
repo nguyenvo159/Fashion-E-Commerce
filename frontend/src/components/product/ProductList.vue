@@ -62,7 +62,9 @@ export default {
                 } else {
                     await CartService.update(user._id, productId, 1, 'M');
                 }
-                this.$router.push('/cart');
+                // this.$router.push('/cart');
+                $('#addToCartToasts').toast('show');
+
 
             } catch(error){
                 console.log(error);

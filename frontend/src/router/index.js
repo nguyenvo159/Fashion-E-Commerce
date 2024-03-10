@@ -3,6 +3,8 @@ import store from "@/store/index.js";
 
 import Home from "@/views/Home.vue";
 import About from "@/views/About.vue";
+
+import Analytics from "@/views/admin/Analytics.vue";
 import ProductManager from "@/views/admin/ProductManager.vue";
 import UserManager from "@/views/admin/UserManager.vue";
 import OrderManager from "@/views/admin/OrderManager.vue";
@@ -35,6 +37,12 @@ const routes = [
     },
 
     // Admin
+    {
+        path: "/admin/analytics",
+        name: "Analytics",
+        component: Analytics,
+        meta: { requiresAuth: true, requiresAdmin: true }
+    },
 
     {
         path: "/admin/product",

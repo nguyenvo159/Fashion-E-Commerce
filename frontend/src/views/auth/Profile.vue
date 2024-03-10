@@ -3,7 +3,7 @@
         <div class="row justify-content-center">
             <div id="dv" class="col-xl-8 col-lg-10 col-11">
                 <h2 class="mt-2 mb-5">Thông Tin Tài Khoản</h2>
-                <div v-if="user">
+                <div v-if="user" class="mb-5">
                     <Form @submit="update" :validation-schema="userFormSchema">
                         <div class="row justify-content-center">
                             <div class="col-lg-6 form-group">
@@ -56,7 +56,7 @@
                                     <i v-else class="fa-solid fa-eye-slash"></i>
                                 </button>
 
-                                <ErrorMessage class="error-feedback" name="password" />
+                                <ErrorMessage class="error-feedback" :name="password ? 'password' : ''" />
                                 <div v-if="!isPassword">
                                     <p class="error-feedback">Sai thông tin mật khẩu</p>
                                 </div>
@@ -64,15 +64,15 @@
 
                             <div class=" col-12 form-group">
                                 <label for="new-password">Mật khẩu mới:</label>
-                                <Field class="form-control rounded-0" v-model="newPassword" id="new-password" name="new-password" min="6" max="16"
-                                :type="showPassword[1] ? 'text' : 'password'" />
+                                <Field class="form-control rounded-0" id="new-password" name="new-password" min="6" max="16"
+                                :type="showPassword[1] ? 'text' : 'password'" v-model="newPassword" />
                                 <button class="btn position-absolute" type="button" 
                                     @click="toggleShowPassword(1)" style="right: 15px; top: 32px;">
                                     <i v-if="showPassword[1]" class="fa-solid fa-eye"></i>
                                     <i v-else class="fa-solid fa-eye-slash"></i>
                                 </button>
 
-                                <ErrorMessage class="error-feedback" name="new-password" />
+                                <ErrorMessage class="error-feedback" :name="newPassword? 'new-password': ''" />
 
                             </div>
 
@@ -86,7 +86,7 @@
                                     <i v-else class="fa-solid fa-eye-slash"></i>
                                 </button>
 
-                                <ErrorMessage class="error-feedback" name="re-password" />
+                                <ErrorMessage class="error-feedback" :name="rePassword? 're-password': ''" />
 
                             </div>
                         </div>
@@ -97,6 +97,21 @@
                 </div>
                 <div v-else>
                     <p class="mt-5 mb-5">Tải thông tin tài khoản thất bại, thử lại sau.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="position-fixed bottom-0 right-0 p-3" style="z-index: 99; right: 0; top: 80px;">
+            <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-delay="4000">
+                <div class="toast-header">
+                <strong class="mr-auto h5 p-2 text-warning">
+                    <i class="fa-regular fa-circle-check "></i> &nbsp; Successfully,</strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="toast-body">
+                    <p class="text-muted p-2 m-0" style="font-size: large; width: 300px;">Đã cập nhật thành công.</p>
                 </div>
             </div>
         </div>
@@ -122,7 +137,7 @@ export default {
             existsEmail: false,
             password: "",
             newPassword: "",
-            rePassword: "",
+            rePassword:"",
             user: this.$store.getters.getUser,
             userFormSchema: yup.object().shape({
                 name: yup.string()
@@ -140,15 +155,15 @@ export default {
             }),
             passwordFormSchema: yup.object().shape({
                 'new-password': yup.string()
-                                    .required("Vui lòng nhập mật khẩu")
+                                    .required('Mật khẩu là bắt buộc.')
                                     .min(6, "Mật khẩu phải chứa ít nhất 6 ký tự")
                                     .max(16, "Mật khẩu có tối đa 16 kí tự.",),
                 're-password': yup.string()
-                                    .required("Vui lòng nhập mật khẩu")
+                                    .required('Mật khẩu là bắt buộc.')
                                     .oneOf([yup.ref('new-password'), null], 'Mật khẩu không khớp'),
 
                 password: yup.string()
-                                    .required("Vui lòng nhập mật khẩu")
+                                    .required('Mật khẩu là bắt buộc.')
                                     .min(6, "Mật khẩu phải chứa ít nhất 6 ký tự")
                                     .max(16, "Mật khẩu có tối đa 16 kí tự.",)
                                     .oneOf([yup.ref('password'), null], 'Mật khẩu không khớp'),
@@ -169,7 +184,7 @@ export default {
                 const user = this.$store.getters.getUser;
                 this.password ="";
                 this.newPassword ="";
-                this.rePassword ="";
+                this.rePassword="";
                 this.user = await UserService.getByEmail(user.email);
             } catch (error){
                 this.user = null;
@@ -182,9 +197,8 @@ export default {
                 await UserService.update(this.user._id, user);
                 const token = localStorage.getItem('token');
                 this.$store.commit('SET_USER',  this.user, token);
-                // console.log(this.user);
-                // console.log(this.$store.getters.getUser);
-                // console.log(token);
+
+                $('#liveToast').toast('show');
                 this.retrieveUser();
                 this.$router.push('/profile');
                 
@@ -200,12 +214,12 @@ export default {
                 const isPass = bcrypt.compareSync(currentPassword, password);
 
                 if(isPass){
-                    this.isPassword = true;
                     await UserService.update(this.user._id, {password: this.newPassword});
+                    $('#liveToast').toast('show');
                     this.retrieveUser();
-                    this.$router.push('/profile');
                 } else {
                     this.isPassword = false;
+                    return;
                 }
             } catch (error) {
                 console.log(error);

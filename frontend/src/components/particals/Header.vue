@@ -80,7 +80,7 @@
                             <i class="fa-solid fa-clipboard-list"></i>
                             &nbsp&nbsp&nbsp Đơn Hàng</router-link>
                         <div class="m-0 dropdown-divider"></div>
-                        <a class="dropdown-item pt-1 pb-1" @click="logout" >
+                        <a class="dropdown-item pt-1 pb-1 cursor-pointer" @click="logout" >
                             <i class="fa-solid fa-right-from-bracket"></i>
                             &nbsp&nbsp Đăng Xuất</a>
                     </div>
