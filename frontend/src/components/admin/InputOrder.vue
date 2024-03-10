@@ -18,7 +18,7 @@
 
                             <div class="col-lg-6 form-group">
                                 <label for="status">Trạng thái</label>
-                                <select class="form-control " name="status" v-model="orderLocal.status" :readonly="!isAdmin">
+                                <select class="form-control " name="status" v-model="orderLocal.status" :disabled="isOrderRoute"  :readonly="!isAdmin">
                                     <option value="Pending">Chờ xử lý</option>
                                     <option value="Confirmed">Đã xác nhận</option>
                                     <option value="Shipping">Đang giao</option>
@@ -48,7 +48,7 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" @click="deleteOrder" >Xóa đơn hàng</button>
-                            <button type="submit" class="btn btn-primary" v-if="isAdmin">Lưu</button>
+                            <button type="submit" class="btn btn-primary"  v-if="isAdmin && !isOrderRoute">Lưu</button>
                         </div>
                     </form>
                     <div class="row container-fluid"> 
@@ -89,6 +89,9 @@ export default {
         isAdmin(){
             return this.$store.getters.isAdmin;
         },
+        isOrderRoute() {
+            return this.$route.path === '/order';
+        }
     },
     emits: ['submit:order'],
     props: {
@@ -123,7 +126,7 @@ export default {
         },
         async deleteOrder(){
             try {
-                console.log(this.orderLocal);
+                // console.log(this.orderLocal);
                 await OrderService.delete(this.orderLocal._id);
                 this.$emit('close');
 

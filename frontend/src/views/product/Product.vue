@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <div class="row">
+        <div class="row justify-content-center">
             <div id="dv" :class="{ 'col-10 offset-1': screenWidth >= 450, 'col-11': screenWidth < 450 }">
                 <div class="mt-2 mb-2 d-flex justify-content-center">
                     <router-link class="active-bottom p-3 pr-4 pl-4 font-weight-bold main-hover text-decoration-none"
@@ -48,9 +48,16 @@ export default {
         async retrieveProducts() {
             try {
                 this.products = await ProductService.getAll();
+                this.sortProductsByCategory();
             } catch (error) {
                 console.error('Error fetching products:', error);
             }
+        },
+        sortProductsByCategory() {
+            this.products.sort((a, b) => {
+                const categories = ['Shirt', 'Pant', 'Other'];
+                return categories.indexOf(a.category) - categories.indexOf(b.category);
+            });
         },
         updateScreenWidth() {
             this.screenWidth = window.innerWidth;

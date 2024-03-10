@@ -15,9 +15,12 @@ import Detail from "@/components/product/ProductDetail.vue";
 
 
 import Cart from "@/views/cart/Cart.vue";
+import Order from "@/views/order/Order.vue";
+
 // Auth
 import Register from "@/views/auth/Register.vue";
 import Login from "@/views/auth/Login.vue";
+import Profile from "@/views/auth/Profile.vue";
 
 const routes = [
     {
@@ -92,6 +95,12 @@ const routes = [
         name: "Login",
         component: Login,
     },
+    {
+        path: "/profile",
+        name: "Profile",
+        component: Profile,
+        meta: { requiresAuth: true }
+    },
 
     // Cart
     {
@@ -101,6 +110,16 @@ const routes = [
         meta: { requiresAuth: true }
 
     },
+
+    //Order
+    {
+        path: "/order",
+        name: "Order",
+        component: Order,
+        meta: { requiresAuth: true }
+
+    },
+
 
 ]
 

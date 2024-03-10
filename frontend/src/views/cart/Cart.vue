@@ -1,9 +1,9 @@
 <template>
     <div class="container-fluid d-flex justify-content-center">
-        <div :class="{'row col-8': screenWidth >768, 'row w-75': screenWidth >= 450 && screenWidth <= 768, 'col-12': screenWidth < 450 }">
-            <h2 class="w-100 mt-3 mb-3">Giỏ Hàng</h2>
+        <div v-if="cart && cart.items && cart.items.length > 0" :class="{'row col-8': screenWidth >768, 'row w-75': screenWidth >= 450 && screenWidth <= 768, 'col-12': screenWidth < 450 }">
+            <router-link :to="{name: 'Cart'}" class="h2 mt-3 mb-3 main-hover">Giỏ Hàng</router-link>
             <ul class="w-100 pl-0" style="min-height: 200px;">
-                <li v-if="cart && cart.items" v-for="item in cart.items.slice().reverse()" :key="item.productId" class="position-relative list-unstyled">
+                <li v-for="item in cart.items.slice().reverse()" :key="item.productId" class="position-relative list-unstyled">
                         <div class="card shadow-sm mt-3 flex-row border-0 rounded-0">
                             <div class="card-img-left d-flex align-items-center" style="height: auto">
                                 <img :src="item.product.imgURL" style="width:154px; height: 100%; object-fit: contain;" class="img-fluid"
@@ -52,9 +52,7 @@
                             </button>
                         </div>
                 </li>
-                <div v-else class="mt-5 mb-5">
-                    <p class="h5 text-muted font-italic">Giỏ hàng hiện đang rỗng, hãy quay lại khi đã thêm sản phẩm vào!</p>
-                </div>
+                
             </ul>
 
             <div class="w-100 mb-5 mt-4 d-flex justify-content-between align-items-center">
@@ -79,7 +77,7 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body" >
                             <form @submit="order">
                                 <div class="row">
                                     <div class="col-lg-6 form-group">
@@ -106,10 +104,35 @@
                                             v-model="orderTemp.note" label="Mô tả" />
                                     </div>
                                 </div>
+
+                                <div class="row m-0"> 
+                                    <p class="w-100">Đơn hàng gồm:</p>
+                                    <div class="card mb-3 rounded-0 flex-row col-12" v-for="(item, index) in cart.items" :key="index">
+                                        <div class="card-img-left d-flex align-items-center">
+                                            <img :src="item.product.imgURL" style="width:80px; height: 80px; object-fit: contain;" class="img-fluid"
+                                                alt="Ảnh sản phẩm">
+                                        </div>
+                                        <div class="pl-3 card-body position-relative p-2">
+                                            <strong class="card-title main-hover">{{ item.product.name }}</strong>
+                                            
+                                            <p class="text-muted font-italic mb-2" style="font-size: 12px;" >Size: {{ item.size }}</p>
+                                            <p class="price card-text"> <i>${{ item.product.price }}</i> </p>
+                                
+                                            <div class="position-absolute" style="right: 20px; bottom: 10px;">
+                                                <p class="">x{{ item.quantity }}</p>
+                                            </div>
+                                        </div>
+                                
+                                    </div>
+                                    <p class="w-100 text-right">Thành tiền: <span class="price">{{ cart.total ? cart.total.toFixed(2) : '0.00' }}$</span></p>
+                                    <p class="w-100 text-right">Phí vận chuyển: <span class="price">3.00$</span></p>
+                                    <p class="w-100 text-right">Tổng tiền: <span class="price">{{ cart.total ? (cart.total + 3).toFixed(2) : '0.00' }}$</span></p>
+            
+                                </div>
         
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                                    <button type="submit" class="btn btn-primary">Lưu</button>
+                                    <button type="submit" class="btn btn-primary">Đặt</button>
                                 </div>
                             </form> 
                         </div>
@@ -118,6 +141,12 @@
                 </div>
             </div>
 
+        </div>
+        <div v-else id="dv" :class="{'row col-8': screenWidth >768, 'row w-75': screenWidth >= 450 && screenWidth <= 768, 'col-12': screenWidth < 450 }">
+            <router-link :to="{name: 'Cart'}" class="h2 mt-3 mb-3 main-hover w-100">Giỏ Hàng</router-link>
+            <div class="mt-5 mb-5">
+                <p class="h5 text-muted font-italic">Giỏ hàng trống, hãy quay lại khi đã thêm sản phẩm vào!</p>
+            </div>
         </div>
     </div>
 </template>
@@ -145,9 +174,7 @@ export default {
         try {
             window.addEventListener('resize', this.updateScreenWidth);
             this.user = this.$store.getters.getUser;
-            console.log(this.user);
             this.orderTemp = {name: this.user.name, phone: this.user.phone};
-            console.log(this.orderTemp);
             this.retrieveCart();
         } catch (error) {
             console.log(error);
@@ -161,6 +188,11 @@ export default {
             try {
                 const cart = await CartService.get(this.user._id);
                 if (cart.items.length != 0 ){
+                    for (const item of cart.items) {
+                        if (item.product.inventory == 0) {
+                            await this.removeItem(item.productId, item.size);
+                        }
+                    }
                     this.cart = cart;
                 } else {
                     this.cart = null;
@@ -190,7 +222,7 @@ export default {
         },
 
         async increaseQuantity(item) {
-            if (item.quantity < 10) {
+            if (item.quantity < 20 && item.quantity < item.product.inventory) {
                 item.quantity++;
                 await this.updateCartItem(item);
             }

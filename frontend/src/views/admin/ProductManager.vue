@@ -65,7 +65,11 @@
 
                         <tr v-for="(product, index) in filteredProducts" :key="product._id" class="product-item">
                             <td class="align-middle text-center">{{ index + 1 }}</td>
-                            <td>{{ product.name }}</td>
+                            <td>
+                                <router-link :to="{ name: 'Detail', params: { id: product._id } }" class=" main-hover">
+                                    {{ product.name }}
+                                </router-link>
+                            </td>
                             <td>{{ product.category }}</td>
                             <td>{{ product.price }}</td>
                             <td>{{ formatDate(product.createdAt) }}</td>
@@ -160,6 +164,14 @@ export default {
             this.retrieveProducts();
             this.activeIndex = -1;
             this.searchText = "";
+            this.newProduct = {
+                name: "",
+                price: 0,
+                inventory: 0,
+                category: "",
+                imgURL: "",
+                description: "",
+            };
         },
         closeModal() {
             $('#add-product').modal('hide');
@@ -196,6 +208,7 @@ export default {
         async retrieveProducts() {
             try {
                 this.products = await ProductService.getAll();
+                
             } catch (error) {
                 console.log(error);
             }
@@ -205,7 +218,7 @@ export default {
         async createProduct(data) {
             try {
                 await ProductService.create(data);
-                this.retrieveProducts();
+                this.refreshList();
             } catch (error) {
                 console.log(error);
             }
@@ -215,7 +228,7 @@ export default {
         async updateProduct(data) {
             try {
                 await ProductService.update(this.product._id, data);
-                this.retrieveProducts();
+                this.refreshList();
             } catch (error) {
                 console.log(error);
             }

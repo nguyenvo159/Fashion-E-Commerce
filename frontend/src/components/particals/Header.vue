@@ -72,13 +72,13 @@
                             <i class="fa-solid fa-user-gear fa-lg"></i>                            
                     </a>
                     <div class="w-100 pb-0 mt-3 dropdown-menu border-0 rounded-0 bg-light" v-if="isLoggedIn">
-                        <a class="dropdown-item pt-1 pb-1" href="">
+                        <router-link class="dropdown-item pt-1 pb-1" :to="{name: 'Profile'}">
                             <i class="fa-solid fa-user"></i>
-                            &nbsp Tài Khoản</a>
+                            &nbsp Tài Khoản</router-link>
                         <div class="m-0 dropdown-divider"></div>
-                        <a class="dropdown-item pt-1 pb-1" href="">
+                        <router-link class="dropdown-item pt-1 pb-1" :to="{name: 'Order'}">
                             <i class="fa-solid fa-clipboard-list"></i>
-                            &nbsp&nbsp&nbsp Đơn Hàng</a>
+                            &nbsp&nbsp&nbsp Đơn Hàng</router-link>
                         <div class="m-0 dropdown-divider"></div>
                         <a class="dropdown-item pt-1 pb-1" @click="logout" >
                             <i class="fa-solid fa-right-from-bracket"></i>

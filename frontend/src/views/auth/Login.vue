@@ -67,7 +67,7 @@ export default {
           await localStorage.setItem('token', token);
           const userData = await UserService.getByEmail(this.email);
           this.$store.commit('SET_USER',  userData, token);
-          console.log(userData);
+          // console.log(userData);
           
           this.$router.push('/');
         } else {

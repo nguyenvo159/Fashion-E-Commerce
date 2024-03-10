@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <div class="row">
+        <div class="row justify-content-center">
             <div id="dv" :class="{ 'col-10 offset-1': screenWidth >= 450, 'col-11': screenWidth < 450 }">
                 <div class="mt-2 mb-2 d-flex justify-content-center">
                     <router-link class="p-3 pr-4 pl-4 font-weight-bold main-hover text-decoration-none"

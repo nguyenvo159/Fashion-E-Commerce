@@ -12,15 +12,15 @@
                 <div id="carouselExampleControls" class="carousel slide border" data-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item">
-                            <img :src="product.imgURL" class="d-block w-100" style="height: 500px; object-fit: contain;"
+                            <img :src="product.imgURL" class="d-block w-100" style=" object-fit: contain;"
                                 alt="image">
                         </div>
                         <div class="carousel-item active">
-                            <img :src="product.imgURL" class="d-block w-100" style="height: 500px; object-fit: contain;"
+                            <img :src="product.imgURL" class="d-block w-100" style=" object-fit: contain;"
                                 alt="image">
                         </div>
                         <div class="carousel-item">
-                            <img :src="product.imgURL" class="d-block w-100" style="height: 500px; object-fit: contain;"
+                            <img :src="product.imgURL" class="d-block w-100" style=" object-fit: contain;"
                                 alt="image">
                         </div>
                     </div>
@@ -45,13 +45,20 @@
             <div class="m-4 col-lg-4 col-12">
                 <h3 class="card-title main-hover">{{ product.name }}</h3>
                 <hr>
-                <h4><span class="price">${{ product.price }}</span></h4> <br>
-                <div>
-                    <p>Thông tin sản phẩm: <br>
+                <h4><span class="price">${{ product.price? product.price.toFixed(2):'0.00' }}</span></h4> <br>
+                <div class="d-flex justify-content-around">
+						<div class="item-policy text-muted"><i class="fa-solid fa-repeat"></i> Đổi trả dễ dàng</div>
+						<div class="item-policy text-muted"><i class="fa-solid fa-check"></i> Chính hãng 100%</div>
+						<div class="item-policy text-muted"><i class="fa-solid fa-truck"></i> Giao toàn quốc</div>
+					</div>
+                    
+                <div class="mt-4">
+                    <p class="m-0 font-new decreption" style="white-space: pre-line; ">Thông tin sản phẩm: <br>
                         {{ product.description }}</p>
                 </div>
+
                 <br>
-                <div class="form-check d-flex p-0 mb-3">
+                <div class="form-check p-0 mb-3">
                     <p class="pr-3 mb-2">Kích thước: </p>
                     <div v-if="product.category != 'Other'" class="d-flex">
                         <div class="">
@@ -125,12 +132,8 @@
 
             </div>
             <div class="col-lg-7 col-12 mt-4">
-                <div class="p-2">
-                    <b>Mô tả:</b> <br> <br>
-                    <p class="text-justify">Thông tin sản phẩm: <br>
-                        {{ product.description }}</p>
-                </div>
-                <p class="p-2 text-justify"><b>Hướng dẫn bảo quản sản phẩm:</b> <br><br>
+                
+                <p class="p-2 text-justify font-new"><b>Hướng dẫn bảo quản sản phẩm:</b> <br><br>
 
                     - Ngâm áo vào NƯỚC LẠNH có pha giấm hoặc phèn chua từ trong 2 tiếng đồng hồ<br><br>
 
@@ -224,7 +227,7 @@ export default {
             if (quantityInput < 1 ){
                 quantityInput.value = 1;
             }  
-            if ( quantityInput <= 20 && quantityInput > this.product.inventor ){
+            if (  quantityInput.value > this.product.inventor ){
                 quantityInput = this.product.inventory;
             } 
         },
@@ -240,8 +243,11 @@ export default {
         increaseQuantity() {
             const quantityInput = document.getElementById('quantityDetail');
             let currentQuantity = parseInt(quantityInput.value);
-            currentQuantity++;
-            quantityInput.value = currentQuantity;
+            if(currentQuantity < this.product.inventory){
+                currentQuantity++;
+                quantityInput.value = currentQuantity;
+            }
+            
         },
     },
     async mounted() {
@@ -272,5 +278,18 @@ export default {
 .selected-size {
     background-color: #000;
     color: #fff;
+}
+
+.font-new{
+    font-family: 'Futura', sans-serif;
+}
+
+.item-policy{
+    font-size: 15px;
+    font-style: italic;
+}
+
+.description{
+    line-height: 1.9;
 }
 </style>

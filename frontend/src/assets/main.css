@@ -72,7 +72,7 @@ a.main-hover {
 }
 
 .card:hover img.card-img-top {
-  transform: scale(1.2);
+  transform: scale(1.1);
 }
 
 .card-overlay {
@@ -96,7 +96,7 @@ a.main-hover {
 .card-overlay i {
   padding: 5px;
   border-radius: 50%;
-  background-color: #fff;
+  /* background-color: #fff; */
   color: rgba(0, 0, 0, 0.7);
   font-size: 24px;
 }
