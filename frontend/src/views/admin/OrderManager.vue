@@ -81,9 +81,9 @@ export default {
     computed: {
         orderStrings() {
             return this.orders.map((order) => {
-                const { name, address, status, createdAt, phone } = order;
+                const { _id, name, address, status, createdAt, phone } = order;
                 const date = this.formatDate(createdAt);
-                return [name.toLowerCase(), address.toLowerCase(), status.toLowerCase(), date.toLowerCase(), phone].join("");
+                return [_id.toLocaleLowerCase(), name.toLowerCase(), address.toLowerCase(), status.toLowerCase(), date.toLowerCase(), phone].join("");
             });
         },
         filteredOrders() {

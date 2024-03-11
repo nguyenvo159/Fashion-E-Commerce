@@ -23,7 +23,7 @@ export default {
   <div id="app">
     <router-view />
       <div class="position-fixed bottom-0 right-0 p-3" style="z-index: 99; right: 0; top: 80px;">
-        <div id="addToCartToasts" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000">
+        <div id="addToCartToasts" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-delay="1500">
             <div class="toast-header">
             <strong class="mr-auto h5 p-2 text-warning">
                 <i class="fa-regular fa-circle-check "></i> &nbsp; Successfully,</strong>

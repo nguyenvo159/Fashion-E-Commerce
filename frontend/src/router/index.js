@@ -3,6 +3,8 @@ import store from "@/store/index.js";
 
 import Home from "@/views/Home.vue";
 import About from "@/views/About.vue";
+import Contact from "@/views/Contact.vue";
+import Search from "@/views/Search.vue";
 
 import Analytics from "@/views/admin/Analytics.vue";
 import ProductManager from "@/views/admin/ProductManager.vue";
@@ -34,6 +36,17 @@ const routes = [
         path: "/about",
         name: "About",
         component: About,
+    },
+    {
+        path: "/contact",
+        name: "Contact",
+        component: Contact,
+    },
+    {
+        path: "/search",
+        name: "Search",
+        component: Search,
+        props: route => ({ query: route.query.q })
     },
 
     // Admin

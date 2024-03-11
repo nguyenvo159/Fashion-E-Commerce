@@ -11,14 +11,8 @@
                             </div>
                             <div class="card-body">
                                 <router-link :to="{ name: 'Detail', params: { id: item.productId } }" class="card-title h5 main-hover">{{ item.product.name }}</router-link>
-                                <div class="mb-2 mt-2">
-                                    <select class="form-size form-control pt-0 pb-0" style="width: auto; height: 25px;" name="size" id="size" :value="item.size">
-                                        <option class="rounded-0" value="S">Size S</option>
-                                        <option class="rounded-0" value="M">Size M</option>
-                                        <option class="rounded-0" value="L">Size L</option>
-                                        <option class="rounded-0" value="XL">Size XL</option>
-                                        <option class="rounded-0" value="free-size">free-size</option>
-                                    </select>
+                                <div class="mb-2">
+                                    <span class="text-muted font-italic">{{ item.size == 'free-size'? item.size: `Size ${item.size}`}}</span>
                                 </div>
                                 <p class="price card-text">${{ item.product.price }}</p>
                 
@@ -124,6 +118,7 @@
                                         </div>
                                 
                                     </div>
+                                    <p class="w-100 text-muted text-center font-italic"><i class="fa-solid fa-truck-fast"></i> Miễn phí giao hàng cho tất cả đơn hàng từ 50$</p>
                                     <p class="w-100 text-right">Thành tiền: <span class="price">{{ cart.total ? cart.total.toFixed(2) : '0.00' }}$</span></p>
                                     <p class="w-100 text-right">Phí vận chuyển: <span class="price">
                                         {{cart.total < 50 ? '3.00' : '0.00' }} $</span></p>
@@ -244,7 +239,7 @@ export default {
                 await OrderService.create(this.user._id, this.orderTemp.name, this.orderTemp.address, this.orderTemp.phone, this.orderTemp.note);
                 this.retrieveCart();
                 $('#orderNow').modal('hide');
-                $this.$router.push('/order');
+                this.$router.push('/order');
 
             } catch (error) {
                 console.error(error);

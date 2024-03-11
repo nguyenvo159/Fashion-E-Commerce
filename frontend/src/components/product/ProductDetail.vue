@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <div v-if="product" class=" col-lg-10 offset-lg-1 row">
+        <div v-if="product" class=" col-lg-10 offset-lg-1 row mb-5">
             <div class="mt-3 mb-3 col-12">
                 <h2>Sản phẩm
                     / {{ product.category }}
@@ -97,6 +97,7 @@
                 <p><a data-toggle="modal" data-target="#instruction"
                         class="cursor-pointer text-decoration-none error-feedback"> + Hướng dẫn chọn size</a></p>
 
+                <p class="w-100 text-muted font-italic"><i class="fa-solid fa-truck-fast"></i> Miễn phí giao hàng cho tất cả đơn hàng từ 50$</p>
 
                 <p>Số lượng:</p>
                 <div class="row d-flex w-100 ml-1">
