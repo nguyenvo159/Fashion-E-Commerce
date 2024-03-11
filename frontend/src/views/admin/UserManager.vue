@@ -2,7 +2,7 @@
     <div class="container-fluid pb-4" style="background-color: lightcyan;">
         <div class="row" >
             <DashBoard type="User"/>
-            <div id="dv" class="col-lg-9 col-12 admin-content">
+            <div id="dv" class="col-lg-9 col-11 admin-content">
                 <h1 class="mb-4">Quản lý Người Dùng </h1>
 
                 <div class="d-flex">

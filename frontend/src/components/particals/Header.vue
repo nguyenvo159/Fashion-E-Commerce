@@ -43,7 +43,7 @@
                     <a  class="main-hover f-24">LIÊN HỆ</a>
                 </li>
                 <li class="p-2 mr-3 ml-3 nav-item" v-if="isAdmin">
-                    <router-link :to="{name: 'UserManager'}" class="main-hover f-24" >QUẢN TRỊ</router-link>
+                    <router-link :to="{name: 'Analytics'}" class="main-hover f-24" >QUẢN TRỊ</router-link>
                 </li>
                 <li class="p-2 mr-3 ml-3 nav-item" v-if="!isLoggedIn">
                     <router-link :to="{name: 'Login'}" class="main-hover f-24">ĐĂNG NHẬP </router-link>

@@ -70,8 +70,16 @@
                             </div>
                     
                         </div>
-                        <p class="w-100 text-right">Tổng tiền: <span class="price">{{ orderLocal.total ? orderLocal.total.toFixed(2) : '0.00' }}$</span></p>
-
+                        <p class="w-100 text-right">Thành tiền: <span class="price">
+                            {{ orderLocal.total ? (orderLocal.total < 52 ? (orderLocal.total-3).toFixed(2) : orderLocal.total.toFixed(2)) : '0.00' }}$
+                        </span></p>
+                        <p class="w-100 text-right">Phí vận chuyển: <span class="price">
+                            {{ orderLocal.total ? (orderLocal.total < 52 ? '3.00' : '0.00') : '0.00' }}$
+                        </span></p>
+                        <p class="w-100 text-right">Tổng tiền: <span class="price">
+                            {{ orderLocal.total ? orderLocal.total.toFixed(2) : '0.00' }}$
+                        </span></p>
+                        
                     </div>
                 </div>
             </div>

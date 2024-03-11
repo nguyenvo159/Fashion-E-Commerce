@@ -2,7 +2,7 @@
     <div class="container-fluid pb-4" style="background-color: lightcyan;">
         <div class="row" >
             <DashBoard type="Product"/>
-            <div id="dv" class="col-lg-9 col-12 admin-content">
+            <div id="dv" class="col-lg-9 col-11 admin-content">
                 <h1 class="mb-4">Quản Lý Sản Phẩm </h1>
                 <div class="row mt-4">
                     <div class="mb-3 col-lg-3 col-md-6">

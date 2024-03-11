@@ -125,8 +125,10 @@
                                 
                                     </div>
                                     <p class="w-100 text-right">Thành tiền: <span class="price">{{ cart.total ? cart.total.toFixed(2) : '0.00' }}$</span></p>
-                                    <p class="w-100 text-right">Phí vận chuyển: <span class="price">3.00$</span></p>
-                                    <p class="w-100 text-right">Tổng tiền: <span class="price">{{ cart.total ? (cart.total + 3).toFixed(2) : '0.00' }}$</span></p>
+                                    <p class="w-100 text-right">Phí vận chuyển: <span class="price">
+                                        {{cart.total < 50 ? '3.00' : '0.00' }} $</span></p>
+                                    <p class="w-100 text-right">Tổng tiền: <span class="price">
+                                        {{ cart.total < 50 ? (cart.total + 3).toFixed(2) : cart.total.toFixed(2) }}$</span></p>
             
                                 </div>
         
@@ -144,7 +146,7 @@
         </div>
         <div v-else id="dv" :class="{'row col-8': screenWidth >768, 'row w-75': screenWidth >= 450 && screenWidth <= 768, 'col-12': screenWidth < 450 }">
             <router-link :to="{name: 'Cart'}" class="h2 mt-3 mb-3 main-hover w-100">Giỏ Hàng</router-link>
-            <div class="mt-5 mb-5">
+            <div class=" mb-5">
                 <p class="h5 text-muted font-italic">Giỏ hàng trống, hãy quay lại khi đã thêm sản phẩm vào!</p>
             </div>
         </div>
