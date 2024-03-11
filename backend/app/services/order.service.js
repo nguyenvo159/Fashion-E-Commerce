@@ -22,6 +22,10 @@ class OrderService {
 
         let total = cart.total;
 
+        if (cart.total < 50) {
+            total = (cart.total + 3);
+        }
+
         const order = {
             userId: new ObjectId(userId),
             name: name,
