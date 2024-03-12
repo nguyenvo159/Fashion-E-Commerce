@@ -206,7 +206,7 @@ export default {
             try {
                 await CartService.removeItem(this.user._id, productId, size);
                 this.retrieveCart();
-                this.$router.push('/cart');
+                // this.$router.push('/cart');
             } catch (error) {
                 console.error(error);
             }
@@ -239,6 +239,7 @@ export default {
                 await OrderService.create(this.user._id, this.orderTemp.name, this.orderTemp.address, this.orderTemp.phone, this.orderTemp.note);
                 this.retrieveCart();
                 $('#orderNow').modal('hide');
+                window.scrollTo(0, 0);
                 this.$router.push('/order');
 
             } catch (error) {

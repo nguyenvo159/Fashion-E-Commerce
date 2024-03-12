@@ -204,6 +204,7 @@ export default {
             try {
                 const user = this.$store.getters.getUser;
                 if (!user){
+                    window.scrollTo(0, 0);
                     this.$router.push('/login');
                 }
 
@@ -214,6 +215,7 @@ export default {
                     this.errorSize= true;
                 } else {
                     await CartService.update(user._id, productId, quantity, this.selectedSize);
+                    window.scrollTo(0, 0);
                     this.$router.push('/cart');
                 }
 

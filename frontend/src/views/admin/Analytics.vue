@@ -64,18 +64,21 @@
 
                 <!-- Biểu đồ -->
                 <div class="row">
-                    <h2 class="mt-4">Doanh Thu Tháng Này</h2>
+                    <h2 class="mt-4">Doanh Thu Tháng {{selectedMonth}}/{{selectedYear}}: <span class="price">{{revenueMonth}}$</span></h2>
                     <div class="col-lg-12" style="width: 100%; height: 400px;">
                         <canvas id="areaChart" ></canvas>
+                        <p class="mt-2 w-100 text-muted text-center font-italic"> Biểu đồ doanh thu tháng {{selectedMonth}}</p>
                     </div>
                 </div>
-                <div class="row">
-                    <h2 class="mt-4 w-100">Tỷ Lệ Sản Phẩm</h2>
+                <div class="row mt-3">
+                    <h2 class="mt-4 w-100">Số Liệu Sản Phẩm</h2>
                     <div class="col-lg-8">
                         <canvas id="orderChart" style="width: auto;"></canvas>
+                        <p class="mt-2 w-100 text-muted text-center font-italic"> Biểu đồ số sản phẩm đã bán</p>
                     </div>
                     <div class="col-lg-4">
                         <canvas id="pieChart" style="width: auto;"></canvas>
+                        <p class="mt-2 w-100 text-muted text-center font-italic"> Biểu đồ tỉ lệ sản phẩm đã bán</p>
                     </div>
                 </div>
                 
@@ -105,6 +108,7 @@ export default {
             orderChartData: {},
             pieChartData: {},
             result: [0, 0, 0, 0],
+            revenueMonth: 0,
         };
     },
     mounted() {
@@ -152,6 +156,11 @@ export default {
                 this.calculate();
                 const revenue = await AnalyticsService.getRevenue(this.selectedMonth, this.selectedYear);
                 const productRatio = await AnalyticsService.getProductRatio(this.selectedMonth, this.selectedYear);
+
+                this.revenueMonth = 0;
+                for(let key in revenue){
+                    this.revenueMonth+=revenue[key];
+                }
 
                 console.log(revenue);
                 console.log(productRatio);

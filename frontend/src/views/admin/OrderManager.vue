@@ -12,7 +12,7 @@
                 </div>
                 
 
-                <table class="table shadow w-100">
+                <table class="table shadow ">
                     <thead class="thead-light">
                         <tr>
                             <th class="align-middle text-center">STT</th>
@@ -29,7 +29,7 @@
 
                         <tr v-for="(order, index) in filteredOrders" :key="order._id" class="product-item">
                             <td class="align-middle text-center">{{ index + 1 }}</td>
-                            <td>{{ order._id }}</td>
+                            <td class="pl-0 pr-0">{{ order._id }}</td>
                             <td>{{ order.name }}</td>
                             <td>{{ order.phone }}, {{ order.address}}</td>
                             <td>{{ formatDate(order.createdAt) }}</td>

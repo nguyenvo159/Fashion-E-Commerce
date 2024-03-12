@@ -18,7 +18,7 @@
                         {{ product.name }}
                     </router-link>
                     <div class="row justify-content-around p-3">
-                        <span class="price">${{ product.price }}</span>
+                        <span class="price">${{ product.price? product.price.toFixed(2): '0.00' }}</span>
                         <span class="compare-price">$99.99</span>
                     </div>
                 </div>
@@ -52,6 +52,7 @@ export default {
         async addToCart(productId){
             try {
                 if(!this.$store.getters.isLoggedIn){
+                    window.scrollTo(0, 0);
                     this.$router.push('/login');
                 }
                 const product = await ProductService.get(productId);
