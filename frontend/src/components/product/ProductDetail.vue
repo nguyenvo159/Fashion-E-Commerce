@@ -136,7 +136,7 @@
                 
                 <p class="p-2 text-justify font-new"><b>Hướng dẫn bảo quản sản phẩm:</b> <br><br>
 
-                    - Ngâm áo vào NƯỚC LẠNH có pha giấm hoặc phèn chua từ trong 2 tiếng đồng hồ<br><br>
+                    - Ngâm sản phẩm vào NƯỚC LẠNH có pha giấm hoặc phèn chua từ trong 2 tiếng đồng hồ<br><br>
 
                     - Giặt ở nhiệt độ bình thường, với đồ có màu tương tự.<br><br>
 

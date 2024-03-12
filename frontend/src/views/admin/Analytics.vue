@@ -103,7 +103,7 @@ export default {
             selectedMonth: new Date().getMonth() + 1,
             selectedYear: new Date().getFullYear(),
             months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-            years: [2022, 2023, 2024], // Có thể thay đổi phù hợp với nhu cầu của bạn
+            years: [2022, 2023, 2024], 
             areaChartData: {},
             orderChartData: {},
             pieChartData: {},
@@ -171,7 +171,6 @@ export default {
             }
         },
         updateChartData(revenueData, productRatioData) {
-            // Hủy và xóa các biểu đồ cũ trước khi vẽ biểu đồ mới
             if (this.areaChart) this.areaChart.destroy();
             if (this.orderChart) this.orderChart.destroy();
             if (this.pieChart) this.pieChart.destroy();
@@ -215,7 +214,7 @@ export default {
                 }]
             };
 
-            // Vẽ biểu đồ mới
+            // Vẽ biểu đồ 
             var ctxArea = document.getElementById('areaChart').getContext('2d');
             this.areaChart = new Chart(ctxArea, {
                 type: 'line',
