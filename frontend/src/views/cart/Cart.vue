@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid d-flex justify-content-center">
-        <div v-if="cart && cart.items && cart.items.length > 0" :class="{'row col-8': screenWidth >768, 'row w-75': screenWidth >= 450 && screenWidth <= 768, 'col-12': screenWidth < 450 }">
+        <div v-if="cart && cart.items && cart.items.length > 0" class="row col-lg-8 col-12"  >
             <router-link :to="{name: 'Cart'}" class="h2 mt-3 mb-3 main-hover">Giỏ Hàng</router-link>
             <ul class="w-100 pl-0" style="min-height: 200px;">
                 <li v-for="item in cart.items.slice().reverse()" :key="item.productId" class="position-relative list-unstyled">
@@ -139,8 +139,8 @@
             </div>
 
         </div>
-        <div v-else id="dv" :class="{'row col-8': screenWidth >768, 'row w-75': screenWidth >= 450 && screenWidth <= 768, 'col-12': screenWidth < 450 }">
-            <router-link :to="{name: 'Cart'}" class="h2 mt-3 mb-3 main-hover w-100">Giỏ Hàng</router-link>
+        <div v-else id="dv" class="row col-lg-8 col-12">
+            <router-link :to="{name: 'Cart'}" class="h2 mt-3 mb-3 w-100 text-decoration-none text-dark">Giỏ Hàng</router-link>
             <div class=" mb-5">
                 <p class="h5 text-muted font-italic">Giỏ hàng trống, hãy quay lại khi đã thêm sản phẩm vào!</p>
             </div>

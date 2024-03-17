@@ -53,7 +53,7 @@
 
                             <div class="col-12 form-group">
                                 <label for="description">Mô tả</label>
-                                <Field class="form-control" name="description" as="textarea"
+                                <Field class="form-control" name="description" as="textarea" rows="5"
                                     v-model="productLocal.description" label="Mô tả" />
                                 <ErrorMessage class="error-feedback" name="description" />
                             </div>

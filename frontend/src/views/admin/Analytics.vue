@@ -72,7 +72,7 @@
                 </div>
                 <div class="row mt-3">
                     <h2 class="mt-4 w-100">Số Liệu Sản Phẩm</h2>
-                    <div class="col-lg-8">
+                    <div class="col-lg-8" style="width: 100%; height: 400px;">
                         <canvas id="orderChart" style="width: auto;"></canvas>
                         <p class="mt-2 w-100 text-muted text-center font-italic"> Biểu đồ số sản phẩm đã bán</p>
                     </div>
