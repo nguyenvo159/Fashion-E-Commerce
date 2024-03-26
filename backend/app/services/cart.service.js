@@ -64,11 +64,11 @@ class CartService {
         }
 
         // Nếu sản phẩm đã tồn tại, cập nhật số lượng
-        // const updatedQuantity = cart.items[existingItemIndex].quantity + quantity;
+        const updatedQuantity = cart.items[existingItemIndex].quantity + quantity;
         const update = {
             $set: {
                 [`items.${existingItemIndex}.size`]: size,
-                [`items.${existingItemIndex}.quantity`]: quantity
+                [`items.${existingItemIndex}.quantity`]: updatedQuantity
             },
         };
 
@@ -77,7 +77,7 @@ class CartService {
         return "Updated Product successfully";
     }
 
-    async getQuantity(userId, productId) {
+    async getQuantity(userId, productId, size) {
         if (!ObjectId.isValid(userId) || !ObjectId.isValid(productId)) {
             throw new Error("Invalid userId or productId");
         }
@@ -86,10 +86,10 @@ class CartService {
         const cart = await this.Cart.findOne(filter);
 
         if (!cart) {
-            return "Add new cart and product successfully";
+            return "Invalid Cart";
         }
 
-        const existingItemIndex = cart.items.findIndex(item => item.productId.equals(new ObjectId(productId)));
+        const existingItemIndex = cart.items.findIndex(item => item.productId.equals(new ObjectId(productId)) && item.size === size);
         return cart.items[existingItemIndex].quantity;
     }
 
