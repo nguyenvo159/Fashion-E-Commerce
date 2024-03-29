@@ -1,12 +1,12 @@
 <template>
     <div class="container-fluid pb-4" style="background-color: lightcyan;">
-        <div class="row" >
-            <DashBoard type="Product"/>
+        <div class="row">
+            <DashBoard type="Product" />
             <div id="dv" class="col-lg-9 col-11 admin-content">
                 <h1 class="mb-4">Quản Lý Sản Phẩm </h1>
                 <div class="row mt-4">
                     <div class="mb-3 col-lg-3 col-md-6">
-                        <div class="card shadow rounded-0 bg-primary text-white">
+                        <div class="card analytics-number1 rounded-0 shadow text-primary">
                             <div class="card-body">
                                 <h5 class="card-title">Tổng</h5>
                                 <p class="card-text">{{ products.length }}</p>
@@ -14,7 +14,7 @@
                         </div>
                     </div>
                     <div class="mb-3 col-lg-3 col-md-6">
-                        <div class="card shadow rounded-0 bg-warning text-white">
+                        <div class="card analytics-number2 rounded-0 shadow text-success">
                             <div class="card-body">
                                 <h5 class="card-title">Áo</h5>
                                 <p class="card-text">{{ getCategoryCount('Shirt') }}</p>
@@ -22,7 +22,7 @@
                         </div>
                     </div>
                     <div class="mb-3 col-lg-3 col-md-6">
-                        <div class="card shadow rounded-0 bg-success text-white">
+                        <div class="card analytics-number3 rounded-0 shadow text-info">
                             <div class="card-body">
                                 <h5 class="card-title">Quần</h5>
                                 <p class="card-text">{{ getCategoryCount('Pant') }}</p>
@@ -30,7 +30,7 @@
                         </div>
                     </div>
                     <div class="mb-3 col-lg-3 col-md-6">
-                        <div class="card shadow rounded-0 bg-danger text-white">
+                        <div class="card analytics-number4 rounded-0 shadow text-warning">
                             <div class="card-body">
                                 <h5 class="card-title">Khác</h5>
                                 <p class="card-text">{{ getCategoryCount('Other') }}</p>
@@ -47,15 +47,19 @@
 
                 <InputSearch v-model="searchText" />
 
-                <table class="table shadow">
+                <table class="table shadow bg-white">
                     <thead class="thead-light">
                         <tr>
                             <th class="align-middle text-center">STT</th>
-                            <th><a class="cursor-pointer text-decoration-none" style="color: #495057;" @click="sortProductsByName()">Tên</a></th>
-                            <th><a class="cursor-pointer text-decoration-none" style="color: #495057;" @click="sortProductsByCategory()">Loại</a></th>
+                            <th><a class="cursor-pointer text-decoration-none"
+                                    style="color: #495057; user-select: none;" @click="sortProductsByName()">Tên</a>
+                            </th>
+                            <th><a class="cursor-pointer text-decoration-none"
+                                    style="color: #495057; user-select: none;"
+                                    @click="sortProductsByCategory()">Loại</a></th>
                             <th>Giá</th>
                             <th>Ngày thêm</th>
-                            <th>Ngày sửa</th>
+                            <th class="cursor-pointer" @click="sortDate()" style="user-select: none;">Ngày sửa</th>
                             <th class="align-middle text-center">Số lượng</th>
                             <th>Thao tác</th>
                         </tr>
@@ -88,16 +92,16 @@
 
                 </table>
                 <!-- Thêm sản phẩm -->
-                <InputProduct :product="newProduct" @submit:product="createProduct" @close="closeModal" title="Thêm Sản Phẩm"
-                    modalId="add-product" />
+                <InputProduct :product="newProduct" @submit:product="createProduct" @close="closeModal"
+                    title="Thêm Sản Phẩm" modalId="add-product" />
 
                 <!-- Sửa sản phẩm -->
-                <InputProduct :product="product" @submit:product="updateProduct" @close="closeModal" title="Chỉnh Sửa Sản Phẩm"
-                    modalId="update-product" />
+                <InputProduct :product="product" @submit:product="updateProduct" @close="closeModal"
+                    title="Chỉnh Sửa Sản Phẩm" modalId="update-product" />
 
                 <!-- Thông báo -->
-                <NotificationModal modalId="delete-product" title="Xác Nhận Xóa" :message="message" :confirmAction="deleteProduct"
-                    :idToDelete="productToDelete" />
+                <NotificationModal modalId="delete-product" title="Xác Nhận Xóa" :message="message"
+                    :confirmAction="deleteProduct" :idToDelete="productToDelete" />
             </div>
         </div>
     </div>
@@ -134,6 +138,9 @@ export default {
             product: null,
             message: "",
             productToDelete: null,
+            sortByDateAsc: true,
+            sortByNameAsc: true,
+            sortByCategoryAsc: false,
         };
     },
     watch: {
@@ -189,11 +196,37 @@ export default {
 
         // Sắp xếp
         sortProductsByName() {
-            this.products.sort((a, b) => a.name.localeCompare(b.name));
+            this.products.sort((a, b) => {
+                if (this.sortByNameAsc) {
+                    return a.name.localeCompare(b.name);
+                } else {
+                    return b.name.localeCompare(a.name);
+                }
+            });
+            this.sortByNameAsc = !this.sortByNameAsc;
+        },
+        sortProductsByCategory() {
+            this.products.sort((a, b) => {
+                if (this.sortByCategoryAsc) {
+                    return a.category.localeCompare(b.category);
+                } else {
+                    return b.category.localeCompare(a.category);
+                }
+            });
+            this.sortByCategoryAsc = !this.sortByCategoryAsc;
         },
 
-        sortProductsByCategory() {
-            this.products.sort((a, b) => a.category.localeCompare(b.category));
+        sortDate() {
+            this.products.sort((a, b) => {
+                const dateA = new Date(a.updatedAt);
+                const dateB = new Date(b.updatedAt);
+                if (this.sortByDateAsc) {
+                    return dateA - dateB;
+                } else {
+                    return dateB - dateA;
+                }
+            });
+            this.sortByDateAsc = !this.sortByDateAsc;
         },
         confirmDelete(product) {
             this.productToDelete = product._id;
@@ -208,7 +241,7 @@ export default {
         async retrieveProducts() {
             try {
                 this.products = await ProductService.getAll();
-                
+
             } catch (error) {
                 console.log(error);
             }

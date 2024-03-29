@@ -1,43 +1,43 @@
 <template>
     <div class="container-fluid pb-4" style="background-color: lightcyan;">
-        <div class="row" >
-            <DashBoard type="Analytics"/>
+        <div class="row">
+            <DashBoard type="Analytics" />
             <div id="dv" class="col-lg-9 col-11 admin-content">
                 <h1 class="mb-4">Thống Kê</h1>
-        
-                
-                
+
+
+
                 <!-- Hiển thị biểu đồ và dữ liệu thống kê -->
                 <div class="row mt-4">
                     <div class="mb-3 col-lg-3 col-12">
-                        <div class="card bg-primary text-white">
+                        <div class="card analytics-number1 rounded-0 shadow text-primary">
                             <div class="card-body">
                                 <h5 class="card-title">Đơn Hàng Hôm Nay</h5>
-                                <p class="card-text">{{result[0]}}</p>
+                                <p class="card-text">{{ result[0] }}</p>
                             </div>
                         </div>
                     </div>
                     <div class="mb-3 col-lg-3 col-12">
-                        <div class="card bg-success text-white">
+                        <div class="card analytics-number2 rounded-0 shadow text-success">
                             <div class="card-body">
                                 <h5 class="card-title">Doanh Thu Hôm Nay</h5>
-                                <p class="card-text">{{result[1]}} $</p>
+                                <p class="card-text">{{ result[1] }} $</p>
                             </div>
                         </div>
                     </div>
                     <div class="mb-3 col-lg-3 col-12">
-                        <div class="card bg-info text-white">
+                        <div class="card analytics-number3 rounded-0 shadow text-info">
                             <div class="card-body">
                                 <h5 class="card-title">Đơn Hàng Tháng Này</h5>
-                                <p class="card-text">{{result[2]}}</p>
+                                <p class="card-text">{{ result[2] }}</p>
                             </div>
                         </div>
                     </div>
                     <div class="mb-3 col-lg-3 col-12">
-                        <div class="card bg-warning text-white">
+                        <div class="card analytics-number4 rounded-0 shadow text-warning">
                             <div class="card-body">
                                 <h5 class="card-title">Doanh Thu Tháng Này</h5>
-                                <p class="card-text">{{result[3]}} $</p>
+                                <p class="card-text">{{ result[3] }} $</p>
                             </div>
                         </div>
                     </div>
@@ -46,12 +46,12 @@
                 <div class="mt-4">
                     <form @submit="handleSubmit" class="row">
                         <div class="form-group mb-3 col-lg-3">
-                            <select class="form-control" id="selectMonth" v-model="selectedMonth" >
+                            <select class="form-control" id="selectMonth" v-model="selectedMonth">
                                 <option v-for="month in months" :value="month">Tháng {{ month }}</option>
                             </select>
                         </div>
                         <div class="form-group mb-3 col-lg-3">
-                            <select class="form-control" id="selectYear" v-model="selectedYear" >
+                            <select class="form-control" id="selectYear" v-model="selectedYear">
                                 <option v-for="year in years" :value="year">{{ year }}</option>
                             </select>
                         </div>
@@ -60,30 +60,32 @@
                         </div>
                     </form>
                 </div>
-            
+
 
                 <!-- Biểu đồ -->
                 <div class="row">
-                    <h2 class="mt-4">Doanh Thu Tháng {{selectedMonth}}/{{selectedYear}}: <span class="price">{{revenueMonth}}$</span></h2>
+                    <h2 class="mt-4">Doanh Thu Tháng {{ selectedMonth }}/{{ selectedYear }}: <span class="price">{{
+                                    revenueMonth }}$</span></h2>
                     <div class="col-lg-12" style="width: 100%; height: 400px;">
-                        <canvas id="areaChart" ></canvas>
-                        <p class="mt-2 w-100 text-muted text-center font-italic"> Biểu đồ doanh thu tháng {{selectedMonth}}</p>
+                        <canvas class="bg-white shadow p-4" id="areaChart"></canvas>
+                        <p class="mt-2 w-100 text-muted text-center font-italic"> Biểu đồ doanh thu tháng
+                            {{ selectedMonth }}</p>
                     </div>
                 </div>
                 <div class="row mt-3">
                     <h2 class="mt-4 w-100">Số Liệu Sản Phẩm</h2>
                     <div class="col-lg-8" style="width: 100%; height: 400px;">
-                        <canvas id="orderChart" style="width: auto;"></canvas>
+                        <canvas class="bg-white shadow p-4" id="orderChart" style="width: auto;"></canvas>
                         <p class="mt-2 w-100 text-muted text-center font-italic"> Biểu đồ số sản phẩm đã bán</p>
                     </div>
                     <div class="col-lg-4">
-                        <canvas id="pieChart" style="width: auto;"></canvas>
+                        <canvas class="bg-white shadow p-4" id="pieChart" style="width: auto;"></canvas>
                         <p class="mt-2 w-100 text-muted text-center font-italic"> Biểu đồ tỉ lệ sản phẩm đã bán</p>
                     </div>
                 </div>
-                
-            
-                
+
+
+
             </div>
         </div>
     </div>
@@ -103,7 +105,7 @@ export default {
             selectedMonth: new Date().getMonth() + 1,
             selectedYear: new Date().getFullYear(),
             months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-            years: [2022, 2023, 2024], 
+            years: [2022, 2023, 2024],
             areaChartData: {},
             orderChartData: {},
             pieChartData: {},
@@ -115,7 +117,7 @@ export default {
         this.fetchData();
     },
     methods: {
-        async calculate(){
+        async calculate() {
             const orders = await OrderService.getAll();
             const today = new Date();
             const todayOrders = orders.filter(order => {
@@ -133,9 +135,9 @@ export default {
             this.result[1] = todayRevenue;
 
             const monthOrders = orders.filter(order => {
-            const orderDate = new Date(order.createdAt);
-            return orderDate.getMonth() === today.getMonth() &&
-                orderDate.getFullYear() === today.getFullYear();
+                const orderDate = new Date(order.createdAt);
+                return orderDate.getMonth() === today.getMonth() &&
+                    orderDate.getFullYear() === today.getFullYear();
             });
             this.result[2] = monthOrders.length;
 
@@ -158,8 +160,8 @@ export default {
                 const productRatio = await AnalyticsService.getProductRatio(this.selectedMonth, this.selectedYear);
 
                 this.revenueMonth = 0;
-                for(let key in revenue){
-                    this.revenueMonth+=revenue[key];
+                for (let key in revenue) {
+                    this.revenueMonth += revenue[key];
                 }
 
                 console.log(revenue);
@@ -193,19 +195,19 @@ export default {
 
             // biểu đồ cột 
             this.orderChartData = {
-                labels: [ 'Áo', 'Quần', 'Phụ Kiện'],
+                labels: ['Áo', 'Quần', 'Phụ Kiện'],
                 datasets: [{
                     label: 'Cái',
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     borderColor: 'rgba(75, 192, 192, 1)',
                     borderWidth: 1,
-                    data: productRatioData, 
+                    data: productRatioData,
                 }]
             };
 
             // biểu đồ tròn 
             this.pieChartData = {
-                labels: [ 'Áo', 'Quần', 'Phụ Kiện'],
+                labels: ['Áo', 'Quần', 'Phụ Kiện'],
                 datasets: [{
                     label: "%",
                     data: percentages,
@@ -253,5 +255,20 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
+.analytics-number1 {
+    border-left: 10px blue solid !important;
+}
+
+.analytics-number2 {
+    border-left: 10px green solid !important;
+}
+
+.analytics-number3 {
+    border-left: 10px pink solid !important;
+}
+
+.analytics-number4 {
+    border-left: 10px yellow solid !important;
+}
 </style>

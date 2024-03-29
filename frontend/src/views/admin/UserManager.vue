@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid pb-4" style="background-color: lightcyan;">
-        <div class="row" >
-            <DashBoard type="User"/>
+        <div class="row">
+            <DashBoard type="User" />
             <div id="dv" class="col-lg-9 col-11 admin-content">
                 <h1 class="mb-4">Quản lý Người Dùng </h1>
 
@@ -10,10 +10,10 @@
 
                     <button class="btn pb-4 ml-3 m" style="box-shadow: none;" @click="refreshList()">
                         <i class="main-hover fa-solid fa-rotate-right" style="font-size: 24px;"></i></button>
-    
+
                 </div>
 
-                <table class="table shadow">
+                <table class="table shadow bg-white">
                     <thead class="thead-light">
                         <tr>
                             <th class="align-middle text-center">STT</th>
@@ -32,7 +32,7 @@
                             <td>{{ user.name }}</td>
                             <td>{{ user.email }}</td>
                             <td>{{ user.phone }}</td>
-                            <td>{{ user.isAdmin? 'Admin' : 'User'}}</td>
+                            <td>{{ user.isAdmin ? 'Admin' : 'User' }}</td>
                             <td>
                                 <a class="cursor-pointer mr-2" data-toggle="modal" data-target="#update-user"
                                     @click="confirmUpdate(user)">Sửa</a>
@@ -46,10 +46,10 @@
                 </table>
                 <!-- Sửa thông tin User -->
                 <InputUser :user="user" @submit:user="updateUser" @close="closeModal" title="Cập Nhật Tài Khoản"
-                    modalId="update-user"/>
+                    modalId="update-user" />
                 <!-- Thông báo -->
-                <NotificationModal modalId="delete-user" title="Xác Nhận Xóa" :message="message" :confirmAction="deleteUser"
-                    :idToDelete="userToDelete" />
+                <NotificationModal modalId="delete-user" title="Xác Nhận Xóa" :message="message"
+                    :confirmAction="deleteUser" :idToDelete="userToDelete" />
             </div>
         </div>
     </div>
@@ -154,6 +154,4 @@ export default {
     }
 };
 </script>
-<style>
-
-</style>
+<style></style>

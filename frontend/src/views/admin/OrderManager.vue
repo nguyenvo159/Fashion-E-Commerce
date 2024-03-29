@@ -1,25 +1,26 @@
 <template>
     <div class="container-fluid pb-4" style="background-color: lightcyan;">
-        <div class="row" >
-            <DashBoard type="Order"/>
+        <div class="row">
+            <DashBoard type="Order" />
             <div id="dv" class="col-lg-9 col-11 admin-content">
                 <h1 class="mb-4">Quản Lý Đơn Hàng </h1>
                 <div class="d-flex">
                     <InputSearch v-model="searchText" />
-    
-                    <button class="btn pb-4 ml-3 m" style="box-shadow: none;" @click="refreshList()">
-                        <i class="main-hover fa-solid fa-rotate-right" style="font-size: 24px;"></i></button>    
-                </div>
-                
 
-                <table class="table shadow ">
+                    <button class="btn pb-4 ml-3 m" style="box-shadow: none;" @click="refreshList()">
+                        <i class="main-hover fa-solid fa-rotate-right" style="font-size: 24px;"></i></button>
+                </div>
+
+
+                <table class="table shadow bg-white">
                     <thead class="thead-light">
                         <tr>
                             <th class="align-middle text-center">STT</th>
                             <th>Mã</th>
                             <th>Tên</th>
                             <th>Liên hệ</th>
-                            <th><a class="cursor-pointer text-decoration-none" @click="sortDate()" style="color: #495057;">Ngày đặt</a></th>
+                            <th><a class="cursor-pointer text-decoration-none" @click="sortDate()"
+                                    style="color: #495057;">Ngày đặt</a></th>
                             <th>Tổng tiền</th>
                             <th>Trạng thái</th>
                         </tr>
@@ -31,12 +32,12 @@
                             <td class="align-middle text-center">{{ index + 1 }}</td>
                             <td class="pl-0 pr-0">{{ order._id }}</td>
                             <td>{{ order.name }}</td>
-                            <td>{{ order.phone }}, {{ order.address}}</td>
+                            <td>{{ order.phone }}, {{ order.address }}</td>
                             <td>{{ formatDate(order.createdAt) }}</td>
-                            <td>{{ order.total? order.total.toFixed(2) : '0.00' }}</td>
+                            <td>{{ order.total ? order.total.toFixed(2) : '0.00' }}</td>
                             <td class="text-center">
-                                <a class="cursor-pointer font-italic text-decoration-none" data-toggle="modal" data-target="#update-order"
-                                    @click="confirmUpdate(order)">{{ order.status }}</a>
+                                <a class="cursor-pointer font-italic text-decoration-none" data-toggle="modal"
+                                    data-target="#update-order" @click="confirmUpdate(order)">{{ order.status }}</a>
                             </td>
                         </tr>
 
@@ -45,7 +46,7 @@
                 </table>
 
                 <InputOrder :order="order" @submit:order="updateOrder" @close="closeModal" title="Thông tin đơn hàng"
-                    modalId="update-order"/>
+                    modalId="update-order" />
             </div>
         </div>
     </div>
@@ -119,9 +120,9 @@ export default {
                 const dateA = new Date(a.createdAt);
                 const dateB = new Date(b.createdAt);
                 if (this.sortByDateAsc) {
-                    return dateA - dateB; 
+                    return dateA - dateB;
                 } else {
-                    return dateB - dateA; 
+                    return dateB - dateA;
                 }
             });
             this.sortByDateAsc = !this.sortByDateAsc;
@@ -141,7 +142,7 @@ export default {
                 console.log(error);
             }
         },
-        async delete(){
+        async delete() {
             try {
                 await OrderService.delete(this.order._id);
                 this.retrieveOrders();
