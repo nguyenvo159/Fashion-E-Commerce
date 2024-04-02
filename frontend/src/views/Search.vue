@@ -2,14 +2,14 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div id="dv" class="col-lg-10 col-11">
-                <h4 class="mt-3 mb-3">Kết quả tìm kiếm: {{ query? query: "Từ khóa bị lỗi" }}</h4>
+                <h4 class="mt-3 mb-3">Kết quả tìm kiếm: {{ query ? query : "Từ khóa bị lỗi" }}</h4>
 
                 <ProductList v-if="filteredProducts && filteredProducts.length > 0" :products="filteredProducts" />
 
                 <div v-else>
                     <h5 class="mt-5 mb-5 text-center">Không có dữ liệu.</h5>
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -32,13 +32,27 @@ export default {
         ProductList,
     },
     props: {
-        query: {type: String, required: true},
+        query: { type: String, required: true },
     },
     computed: {
         productStrings() {
             return this.products.map((product) => {
-                const { name, category, description } = product;
-                return [name.toLowerCase(), category.toLowerCase(), description.toLowerCase()].join("");
+                let type = '';
+                switch (product.category) {
+                    case 'Shirt':
+                        type = 'Áo';
+                        break;
+                    case 'Pant':
+                        type = 'Quần';
+                        break;
+                    case 'Other':
+                        type = 'Phụ kiện';
+                        break;
+                    default:
+                        type = product.category;
+                }
+                const { name, description } = product;
+                return [name.toLowerCase(), type.toLowerCase(), description.toLowerCase()].join("");
             });
         },
         filteredProducts() {
@@ -58,6 +72,6 @@ export default {
             }
         },
     }
-    
+
 };
 </script>

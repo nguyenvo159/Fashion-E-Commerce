@@ -1,6 +1,5 @@
-
 <template>
-    <div id="search-input" class="shadow mb-4 w-50 input-group">
+    <div id="search-input" class="mb-4 w-50 input-group">
         <!-- <span class="h5 pr-3 m-0 d-flex align-items-center">Tìm kiếm </span> -->
 
         <input type="text" class="form-control rounded-0" placeholder="Nhập thông tin cần tìm..." :value="modelValue"

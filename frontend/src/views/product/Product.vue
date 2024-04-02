@@ -6,7 +6,7 @@
                     <router-link class="active-bottom p-3 pr-4 pl-4 font-weight-bold main-hover text-decoration-none"
                         :to="{ name: 'Product' }" style="font-size: 18px;">Tất cả</router-link>
                     <router-link class="p-3 pr-4 pl-4 font-weight-bold main-hover text-decoration-none"
-                        :to="{name: 'Shirt'}" style="font-size: 18px;">Áo</router-link>
+                        :to="{ name: 'Shirt' }" style="font-size: 18px;">Áo</router-link>
                     <router-link class="p-3 pr-4 pl-4 font-weight-bold main-hover text-decoration-none"
                         :to="{ name: 'Pant' }" style="font-size: 18px;">Quần</router-link>
                     <router-link class="p-3 pr-4 pl-4 font-weight-bold main-hover text-decoration-none"
@@ -22,7 +22,7 @@
                     </select>
                 </div>
 
-                <ProductList v-if="products.length >0" :products="products" />
+                <ProductList v-if="products.length > 0" :products="products" />
 
                 <div v-else>
                     <h5 class="mt-5 mb-5">Không có dữ liệu.</h5>
@@ -53,7 +53,7 @@ export default {
         async retrieveProducts() {
             try {
                 this.products = await ProductService.getAll();
-                this.sortProductsByCategory();
+                this.sortProducts();
             } catch (error) {
                 console.error('Error fetching products:', error);
             }
@@ -83,11 +83,12 @@ export default {
 };
 </script>
 
-<style >
-#dv{
+<style>
+#dv {
     min-height: 500px;
 }
-.select-arrange{
+
+.select-arrange {
     width: auto;
     cursor: pointer;
     border-radius: 0;

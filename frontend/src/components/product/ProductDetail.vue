@@ -3,7 +3,7 @@
         <div v-if="product" class=" col-lg-10 offset-lg-1 row mb-5">
             <div class="mt-3 mb-3 col-12">
                 <h2>Sản phẩm
-                    / {{ product.category }}
+                    / {{ translatedCategory() }}
                 </h2>
             </div>
 
@@ -141,27 +141,30 @@
                     <button class="col-5 btn border" :class="{ 'click-active': active == false }"
                         @click="clickActive(false)">ĐÁNH GIÁ</button>
                 </div>
-                <p v-if="active == true" class="p-2 text-justify font-new"><b>Hướng dẫn bảo quản sản phẩm:</b> <br><br>
+                <p v-if="active == true" class="p-2 pt-3 border-top text-justify font-new"><b>Hướng dẫn bảo quản sản
+                        phẩm:</b> <br><br>
 
-                    - Ngâm sản phẩm vào NƯỚC LẠNH có pha giấm hoặc phèn chua từ trong 2 tiếng đồng hồ<br><br>
+                    &#8722 Ngâm sản phẩm vào NƯỚC LẠNH có pha giấm hoặc phèn chua từ trong 2 tiếng đồng hồ<br><br>
 
-                    - Giặt ở nhiệt độ bình thường, với đồ có màu tương tự.<br><br>
+                    &#8722 Giặt ở nhiệt độ bình thường, với đồ có màu tương tự.<br><br>
 
-                    - Không dùng hóa chất tẩy.<br><br>
+                    &#8722 Không dùng hóa chất tẩy.<br><br>
 
-                    - Hạn chế sử dụng máy sấy và ủi (nếu có) thì ở nhiệt độ thích hợp.<br><br><br>
+                    &#8722 Hạn chế sử dụng máy sấy và ủi (nếu có) thì ở nhiệt độ thích hợp.<br><br><br>
 
 
                     <b>Chính sách bảo hành:</b><br><br>
 
-                    - Miễn phí đổi hàng cho khách mua ở shop trong trường hợp bị lỗi từ nhà sản xuất, giao nhầm hàng, bị
+                    &#8722 Miễn phí đổi hàng cho khách mua ở shop trong trường hợp bị lỗi từ nhà sản xuất, giao nhầm
+                    hàng, bị
                     hư
                     hỏng
                     trong quá trình vận chuyển hàng.<br><br>
 
-                    - Sản phẩm đổi trong thời gian 3 ngày kể từ ngày nhận hàng<br><br>
+                    &#8722 Sản phẩm đổi trong thời gian 3 ngày kể từ ngày nhận hàng<br><br>
 
-                    - Sản phẩm còn mới nguyên tem, tags và mang theo hoá đơn mua hàng, sản phẩm chưa giặt và không dơ
+                    &#8722 Sản phẩm còn mới nguyên tem, tags và mang theo hoá đơn mua hàng, sản phẩm chưa giặt và không
+                    dơ
                     bẩn,
                     hư
                     hỏng bởi những tác nhân bên ngoài cửa hàng sau khi mua hàng.
@@ -218,6 +221,18 @@ export default {
         };
     },
     methods: {
+        translatedCategory() {
+            switch (this.product.category) {
+                case 'Shirt':
+                    return 'Áo';
+                case 'Pant':
+                    return 'Quần';
+                case 'Other':
+                    return 'Phụ kiện';
+                default:
+                    return this.product.category;
+            }
+        },
         clickActive(key) {
             this.active = key;
         },

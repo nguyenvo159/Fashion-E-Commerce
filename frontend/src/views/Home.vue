@@ -1,6 +1,6 @@
 <template>
-    <div class="container-fluid m-0 p-0">
-        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <div class="container-fluid row justify-content-center m-0 p-0">
+        <div id="carouselExampleIndicators" class="col-11 carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
                 <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
                 <li data-target="#carouselExampleIndicators" data-slide-to="1" class=""></li>
@@ -9,15 +9,18 @@
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <img class="d-block w-100"
-                        src="https://amiri.com/cdn/shop/files/DESKTOP_-slideshow-banner_desktop_core.png" alt="First slide">
+                        src="https://amiri.com/cdn/shop/files/DESKTOP_-slideshow-banner_desktop_core.png"
+                        alt="First slide">
                 </div>
                 <div class="carousel-item">
                     <img class="d-block w-100"
-                        src="https://amiri.com/cdn/shop/files/Slideshow-Banner_Desktop_AW23-Mens-6D.jpg" alt="Second slide">
+                        src="https://amiri.com/cdn/shop/files/Slideshow-Banner_Desktop_AW23-Mens-6D.jpg"
+                        alt="Second slide">
                 </div>
                 <div class="carousel-item">
                     <img class="d-block w-100"
-                        src="https://amiri.com/cdn/shop/files/Slideshow-Banner_Desktop_AW23-Womens-1.jpg" alt="Third slide">
+                        src="https://amiri.com/cdn/shop/files/Slideshow-Banner_Desktop_AW23-Womens-1.jpg"
+                        alt="Third slide">
                 </div>
             </div>
             <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -55,9 +58,9 @@
 
 
                 <router-link :to="{ name: 'Pant' }" class="main-hover">
-                <h4 class="mt-3">
-                    Quần
-                </h4>
+                    <h4 class="mt-3">
+                        Quần
+                    </h4>
                 </router-link>
                 <ProductList v-if="pants.length > 0" :products="pants" />
                 <p v-else>Don't have any pant.</p>
@@ -74,7 +77,7 @@
         </div>
     </div>
 </template>
-  
+
 <script>
 import ProductList from "@/components/product/ProductList.vue";
 import ProductService from "@/services/product.service";

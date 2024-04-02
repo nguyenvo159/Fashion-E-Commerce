@@ -124,6 +124,11 @@ export default {
         async retrieveUsers() {
             try {
                 this.users = await UserService.getAll();
+                this.users.sort((a, b) => {
+                    const pqA = a.isAdmin ? 'Admin' : 'User';
+                    const pqB = b.isAdmin ? 'Admin' : 'User';
+                    return pqA.localeCompare(pqB);
+                });
             } catch (error) {
                 console.log(error);
             }

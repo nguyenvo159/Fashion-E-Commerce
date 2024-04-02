@@ -46,18 +46,19 @@
                 <div class="mt-4">
                     <form @submit="handleSubmit" class="row">
                         <div class="form-group mb-3 col-lg-3">
-                            <select class="form-control" id="selectMonth" v-model="selectedMonth">
+                            <select class="form-control" id="selectMonth" v-model="selectedMonth"
+                                @change="handleSubmit">
                                 <option v-for="month in months" :value="month">Tháng {{ month }}</option>
                             </select>
                         </div>
                         <div class="form-group mb-3 col-lg-3">
-                            <select class="form-control" id="selectYear" v-model="selectedYear">
+                            <select class="form-control" id="selectYear" v-model="selectedYear" @change="handleSubmit">
                                 <option v-for="year in years" :value="year">{{ year }}</option>
                             </select>
                         </div>
-                        <div>
+                        <!-- <div>
                             <button type="submit" class="btn btn-primary">Thống kê</button>
-                        </div>
+                        </div> -->
                     </form>
                 </div>
 

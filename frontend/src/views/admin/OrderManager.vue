@@ -20,7 +20,7 @@
                             <th>Tên</th>
                             <th>Liên hệ</th>
                             <th><a class="cursor-pointer text-decoration-none" @click="sortDate()"
-                                    style="color: #495057;">Ngày đặt</a></th>
+                                    style="color: #495057; user-select: none;">Ngày đặt</a></th>
                             <th>Tổng tiền</th>
                             <th>Trạng thái</th>
                         </tr>
@@ -130,6 +130,11 @@ export default {
         async retrieveOrders() {
             try {
                 this.orders = await OrderService.getAll();
+                this.orders.sort((a, b) => {
+                    const dateA = new Date(a.createdAt);
+                    const dateB = new Date(b.createdAt);
+                    return dateB - dateA;
+                });
             } catch (error) {
                 console.log(error);
             }
